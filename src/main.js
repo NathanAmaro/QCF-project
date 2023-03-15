@@ -56,7 +56,7 @@ const syncDB = async () => {
     try {
         const resultado = await database.sync();
     } catch (error) {
-        console.log(error);
+        throw new Error(error.message)
     }
 }
 syncDB()

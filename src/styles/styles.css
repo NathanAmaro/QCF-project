@@ -250,6 +250,7 @@ main {
     border: none;
     padding: 0;
     display: flex;
+    height: min-content;
     border-radius: 5px;
 }
 .container-table {
