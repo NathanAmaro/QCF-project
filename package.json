@@ -1,0 +1,25 @@
+{
+  "name": "QCF",
+  "version": "0.0.1",
+  "description": "Quadro de Controle Financeiro",
+  "main": "src/main.js",
+  "author": "Nathannael Amaro",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "build:win": "electron-packager ./ QCF --platform=win32 --arch=x64 --out ./compile --icon=./build/icon.ico"
+  },
+  "devDependencies": {
+    "electron": "^23.1.2"
+  },
+  "dependencies": {
+    "electron-packager": "^17.1.1",
+    "excel4node": "^1.8.0",
+    "handlebars": "^4.7.7",
+    "moment": "^2.29.4",
+    "puppeteer": "^19.7.4",
+    "sequelize": "^6.29.1",
+    "sqlite3": "^5.1.4"
+  }
+}

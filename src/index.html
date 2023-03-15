@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/styles.css">
+    <link rel="stylesheet" href="./styles/sweetalert2-theme-dark.css">
+    <title>Quadro de Controle Financeiro</title>
+</head>
+
+<body>
+    <div class="user-name-float">
+        <img src="../build/user-bold-blue-200.svg" width="26" height="26" alt="Icon user name" />
+        <span id="username-element"></span>
+    </div>
+    <header>
+        <h1 class="header-title">Quadro de Controle Financeiro</h1>
+        <div class="container-reference-nv1">
+            <span class="title-reference">Referência</span>
+            <div class="container-combobox-button-reference">
+                <div class="container-combobox-reference">
+                    <select class="combobox-reference" style="width: 105px;" id="select-year-reference">
+                        <option value="" selected disabled hidden>Ano</option>
+                    </select>
+                    <select class="combobox-reference" style="width: 155px;" disabled id="select-month-reference">
+                        <option value="" selected disabled hidden>Mês</option>
+                    </select>
+                    <button class="bt-refind-references" id="bt-refind-references" title="Pesquisar referências" type="button">
+                        <img src="../build/arrows-clockwise-fill-blue-200.svg" width="20" height="20"
+                            alt="Icon button refind reference" />
+                    </button>
+                </div>
+                <button class="button-search-movements" title="Pesquisar movimentos" id="button-search-movements" type="button">
+                    <img src="../build/magnifying-glass-bold-blue-200.svg" width="24" height="24"
+                        alt="Icon button search reference" />
+                </button>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="section-totalizers">
+            <h2 class="title-reference-totalizers" id="title-reference-totalizers"></h2>
+            <div class="container-totalizers">
+                <div class="totalizer">
+                    <span class="totalizer-title">Receita</span>
+                    <div class="totalizer-container-value-receit">
+                        R$
+                        <span class="totalizer-value" id="total-receit">0,00</span>
+                    </div>
+                </div>
+                <div class="totalizer">
+                    <span class="totalizer-title">Despesa</span>
+                    <div class="totalizer-container-value-desp">
+                        R$
+                        <span class="totalizer-value" id="total-desp">0,00</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-table">
+            <div class="container-buttons-table">
+                <div class="container-menu-exports">
+                    <button class="button-action-table" type="button">
+                        Exportar
+                        <img src="../build/export-bold-blue-200.svg" width="24" height="24"
+                            alt="Icon button export table" />
+                    </button>
+                    <div class="menu-exports" id="menu-exports">
+                        <button id="export-movements-pdf">
+                            PDF
+                            <img src="../build/file-text-blue-200.svg" width="22" height="22"
+                                alt="Icon button export PDF" />
+                        </button>
+                        <button id="export-movements-xlsx">
+                            XLSX
+                            <img src="../build/microsoft-excel-logo-blue-200.svg" width="22" height="22"
+                                alt="Icon button export PDF" />
+                        </button>
+                    </div>
+                </div>
+                <button class="button-action-table" id="bt-new-register">
+                    Novo movimento
+                    <img src="../build/plus-bold-green-500.svg" width="24" height="24"
+                        alt="Icon button new register table" />
+                </button>
+            </div>
+            <div class="container-table">
+                <div class="table">
+                    <div class="table-head">
+                        <div class="table-th"></div>
+                        <div class="table-th">Número</div>
+                        <div class="table-th">Data</div>
+                        <div class="table-th">Tipo</div>
+                        <div class="table-th">Origem</div>
+                        <div class="table-th">Descrição</div>
+                        <div class="table-th">Valor</div>
+                    </div>
+                    <div class="table-body" id="table-body">
+                    </div>
+                    <div class="table-footer">
+                        <div class="table-footer-td">
+                            <div class="line-subtitle">
+                                <img src="../build/square-fill-red.svg" width="18" height="18" alt="Icon subtitle" />
+                                Tipos de lançamentos com valor negativo
+                            </div>
+                            <div class="line-subtitle">
+                                <img src="../build/square-fill-blue.svg" width="18" height="18" alt="Icon subtitle" />
+                                Tipos de lançamentos com valor positivo
+                            </div>
+                        </div>
+                        <div class="table-footer-td" id="table-footer-td">R$<span id="final-balance-table">0,00</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Definindo o modal de inserir novo movimento -->
+    <div class="overlay-modal" id="overlay-modal">
+        <div class="container-modal">
+            <button id="bt-close-modal" class="bt-close-modal" type="button"><img src="../build/x-bold-blue-200.svg"
+                    alt="Image button close modal"></button>
+            <div class="header-modal">
+                <h2 class="title-modal">Inserir movimento</h2>
+            </div>
+            <form class="form-modal" id="form-modal" action="" method="POST">
+                <div class="main-modal-row">
+                    <div class="container-opening-balance">
+                        <input type="checkbox" id="opening-balance" class="input-opening-balance"/>
+                        <label for="opening-balance">Saldo inicial</label>
+                    </div>
+                    <div class="container-input-modal">
+                        <h6 class="title-input-modal">Tipo</h6>
+                        <select class="input-select-type-modal" id="type-movement">
+                            <option value="" selected disabled hidden>Selecione</option>
+                            <option value="D">Despesa</option>
+                            <option value="R">Receita</option>
+                        </select>
+                    </div>
+                    <div class="container-input-modal">
+                        <h6 class="title-input-modal">Data</h6>
+                        <input type="date" class="input-date-modal" id="date-movement"/>
+                    </div>
+                    <div class="container-input-modal">
+                        <h6 class="title-input-modal">Origem</h6>
+                        <input type="text" class="input-origin-modal" placeholder="Origem" id="origin-movement"/>
+                    </div>
+                    <div class="container-input-modal">
+                        <div style="display: flex; justify-content: space-between;">
+                            <h6 class="title-input-modal">Valor</h6>
+                            <label class="switch" id="switch-type-value-movement">
+                                <input type="checkbox" checked id="type-value-movement">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="container-input-value-movement">
+                            R$
+                            <input type="number" class="input-value-modal" placeholder="0,00" id="value-movement" step="any" maxlength="10"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-modal-row">
+                    <div class="container-textarea-modal">
+                        <h6 class="title-input-modal">Descrição</h6>
+                        <textarea class="textarea-modal" placeholder="Descrição" id="description-movement"></textarea>
+                    </div>
+                </div>
+                <div class="footer-modal">
+                    <button type="button" id="bt-cancel-modal" class="bt-cancel-modal">Cancelar</button>
+                    <button type="submit" id="bt-submit-modal" class="bt-submit-modal">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Definindo o loading -->
+    <div class="overlay-loading" id="overlay-loading">
+        <img src="../build/tail-spin.svg" width="100" height="100" alt="Icon loading spin" />
+    </div>
+</body>
+<!-- Adicionando o arquivo do renderer -->
+<script src="renderer.js"></script>
+<!-- Adicionando o arquivo responsável por validar as informações do formulário -->
+<script src="./js/formValidate.js"></script>
+<!-- Adicionando o arquivo da biblioteca Sweetalert2 -->
+<script src="./js/sweetalert2.min.js"></script>
+<!-- Adicionando o arquivo da biblioteca Moment.js -->
+<script src="./js/moment-with-locales.min.js"></script>
+</html>
