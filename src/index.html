@@ -118,9 +118,9 @@
     </main>
 
     <!-- Definindo o modal de inserir novo movimento -->
-    <div class="overlay-modal" id="overlay-modal">
+    <div class="overlay-modal" id="overlay-modal-insert">
         <div class="container-modal">
-            <button id="bt-close-modal" class="bt-close-modal" type="button"><img src="../build/x-bold-blue-200.svg"
+            <button id="bt-close-modal-insert" class="bt-close-modal" type="button"><img src="../build/x-bold-blue-200.svg"
                     alt="Image button close modal"></button>
             <div class="header-modal">
                 <h2 class="title-modal">Inserir movimento</h2>
@@ -168,8 +168,72 @@
                     </div>
                 </div>
                 <div class="footer-modal">
-                    <button type="button" id="bt-cancel-modal" class="bt-cancel-modal">Cancelar</button>
-                    <button type="submit" id="bt-submit-modal" class="bt-submit-modal">Salvar</button>
+                    <button type="button" id="bt-cancel-modal-insert" class="bt-cancel-modal">Cancelar</button>
+                    <button type="submit" id="bt-submit-modal-insert" class="bt-submit-modal">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Definindo o modal de alterar movimento -->
+    <div class="overlay-modal" id="overlay-modal-alter">
+        <div class="container-modal">
+            <button id="bt-close-modal-alter" class="bt-close-modal" type="button"><img src="../build/x-bold-blue-200.svg"
+                    alt="Image button close modal"></button>
+            <div class="header-modal">
+                <h2 class="title-modal">Alterar movimento</h2>
+            </div>
+            <form class="form-modal" id="form-modal-alter" action="" method="POST">
+                <div class="main-modal-row" style="justify-content: flex-end;">
+                    <div class="container-input-modal">
+                        <h6 class="title-input-modal">Número</h6>
+                        <span class="id-mov-alter-modal" id="id-mov-alter-modal"></span>
+                    </div>
+                </div>
+                <div class="main-modal-row">
+                    <div class="container-opening-balance">
+                        <input type="checkbox" id="opening-balance" class="input-opening-balance"/>
+                        <label for="opening-balance">Saldo inicial</label>
+                    </div>
+                    <div class="container-input-modal">
+                        <h6 class="title-input-modal">Tipo</h6>
+                        <select class="input-select-type-modal" id="type-movement">
+                            <option value="" selected disabled hidden>Selecione</option>
+                            <option value="D">Despesa</option>
+                            <option value="R">Receita</option>
+                        </select>
+                    </div>
+                    <div class="container-input-modal">
+                        <h6 class="title-input-modal">Data</h6>
+                        <input type="date" class="input-date-modal" id="date-movement"/>
+                    </div>
+                    <div class="container-input-modal">
+                        <h6 class="title-input-modal">Origem</h6>
+                        <input type="text" class="input-origin-modal" placeholder="Origem" id="origin-movement"/>
+                    </div>
+                    <div class="container-input-modal">
+                        <div style="display: flex; justify-content: space-between;">
+                            <h6 class="title-input-modal">Valor</h6>
+                            <label class="switch" id="switch-type-value-movement">
+                                <input type="checkbox" checked id="type-value-movement">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="container-input-value-movement">
+                            R$
+                            <input type="number" class="input-value-modal" placeholder="0,00" id="value-movement" step="any" maxlength="10"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-modal-row">
+                    <div class="container-textarea-modal">
+                        <h6 class="title-input-modal">Descrição</h6>
+                        <textarea class="textarea-modal" placeholder="Descrição" id="description-movement"></textarea>
+                    </div>
+                </div>
+                <div class="footer-modal">
+                    <button type="button" id="bt-cancel-modal-alter" class="bt-cancel-modal">Cancelar</button>
+                    <button type="submit" id="bt-submit-modal-alter" class="bt-submit-modal">Salvar</button>
                 </div>
             </form>
         </div>

@@ -458,6 +458,13 @@ main {
     font-weight: 500;
     margin: 0;
 }
+.id-mov-alter-modal {
+    color: var(--color-blue-100);
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+}
 .form-modal {
     display: flex;
     flex-direction: column;

@@ -31,7 +31,7 @@ function genMovsTable(movements) {
         element.innerHTML = `
         <div class="table-td">
             <button class="bt-delete-mov" onclick="deleteMov(event)"><img src="../build/trash-fill-red-500.svg" width="20" height="20" alt="Icon trash" /></button>
-            <button class="bt-edit-mov"><img src="../build/pencil-fill-blue-500.svg" width="20" height="20" alt="Icon trash" /></button>
+            <button class="bt-edit-mov" onclick="alterMov(event)"><img src="../build/pencil-fill-blue-500.svg" width="20" height="20" alt="Icon trash" /></button>
         </div>
         <div class="table-td" id="td-id-movement">${movement.id}</div>
         <div class="table-td">${movement.date}</div>
@@ -177,8 +177,24 @@ function resetForm() {
 }
 
 // Função que controla o modal de inserir movimento
-function showModal(param) {
-    let modal = document.getElementById("overlay-modal");
+function showModalInsert(param) {
+    let modal = document.getElementById("overlay-modal-insert");
+
+    if (param) {
+        // Abrindo o modal
+        modal.style.display = "flex"
+    } else if (!param) {
+        // Resetando o formulário
+        resetForm()
+        // Fechando o modal
+        modal.style.display = "none";
+    }
+
+}
+
+// Função que controla o modal de alterar movimento
+function showModalAlter(param) {
+    let modal = document.getElementById("overlay-modal-alter");
 
     if (param) {
         // Abrindo o modal
@@ -278,6 +294,21 @@ async function deleteMov(event) {
     }
 }
 
+// Função que lida com o evento de alteração de movimento na tabela
+async function alterMov(event) {
+    const button = event.target.parentElement
+    const td = button.parentElement
+    const tr = td.parentElement
+    const idColumn = tr.children['td-id-movement']
+    const numberField = document.getElementById('id-mov-alter-modal')
+    if (idColumn) {
+        const idMov = idColumn.innerHTML
+        numberField.innerHTML = idMov
+        console.log(idMov)
+        showModalAlter(true)
+    }
+}
+
 // Adicionando evento de Click no botão de exportar movimentos em XLSX
 document.getElementById("export-movements-xlsx").addEventListener("click", async () => {
     const ref = getSelectedRef()
@@ -360,7 +391,7 @@ document.getElementById("bt-new-register").addEventListener("click", () => {
     dateMovementField.value = now
 
     // Exibindo o modal
-    showModal(true)
+    showModalInsert(true)
 })
 
 // Adicionando evento de Change no select de ano da referência
@@ -381,14 +412,20 @@ document.getElementById('bt-refind-references').addEventListener("click", async 
     await findReferences('years')
 })
 
-// Adicionando evento de Click no botão de fechar modal
-document.getElementById("bt-close-modal").addEventListener("click", () => showModal(false))
+// Adicionando evento de Click no botão de fechar modal de inserir movimento
+document.getElementById("bt-close-modal-insert").addEventListener("click", () => showModalInsert(false))
 
-// Adicionando evento de Click no botão de cancelar modal
-document.getElementById("bt-cancel-modal").addEventListener("click", () => showModal(false))
+// Adicionando evento de Click no botão de cancelar modal de inserir movimento
+document.getElementById("bt-cancel-modal-insert").addEventListener("click", () => showModalInsert(false))
+
+// Adicionando evento de Click no botão de fechar modal de alterar movimento
+document.getElementById("bt-close-modal-alter").addEventListener("click", () => showModalAlter(false))
+
+// Adicionando evento de Click no botão de cancelar modal de alterar movimento
+document.getElementById("bt-cancel-modal-alter").addEventListener("click", () => showModalAlter(false))
 
 // Adicionando evento de submit no formulário
-document.getElementById("form-modal").addEventListener("submit", (e) => formHandle(e))
+document.getElementById("form-modal").addEventListener("submit", (e) => formHandleInsert(e))
 
 // Adicionando evento Click no checkbox do Saldo Inicial
 document.getElementById("opening-balance").addEventListener("change", function (e) {
@@ -433,8 +470,8 @@ document.getElementById("value-movement").addEventListener("keydown", function (
 
 })
 
-// Função que lida com o Submit do Formulário
-async function formHandle(event) {
+// Função que lida com o Submit do Formulário de inserir movimento
+async function formHandleInsert(event) {
     let form = document.getElementById("form-modal");
     // Evitando que o formulário recarregue a página
     event.preventDefault()
@@ -496,7 +533,95 @@ async function formHandle(event) {
                             }).then(async (result) => {
                                 if (result.isDenied) {
                                     // Fechando o modal
-                                    showModal(false)
+                                    showModalInsert(false)
+                                } else if (result.isConfirmed) {
+                                    // Resetando o formulário
+                                    resetForm()
+                                    // setando a data atual no campo de Data
+                                    form.elements['date-movement'].value = moment().format("YYYY-MM-DD")
+                                }
+                            })
+                        })
+                        .catch((error) => {
+                            // Desabilitando o loading após a resposta
+                            showLoading(false)
+
+                            Swal.fire({ title: "Erro", text: `Erro ao tentar salvar o registro. Especificação do erro: ${error.message}`, icon: 'error', allowOutsideClick: false })
+                        })
+                } else if (result.isDenied) {
+                    Swal.fire({ title: "Informação", text: 'O registro não foi salvo.', icon: 'info', allowOutsideClick: false })
+                }
+            })
+        })
+        .catch((error) => {
+            Swal.fire({ title: "Erro", text: error.message, icon: 'error', allowOutsideClick: false })
+        })
+}
+
+// Função que lida com o Submit do Formulário de alterar movimento
+async function formHandleAlter(event) {
+    let form = document.getElementById("form-modal");
+    // Evitando que o formulário recarregue a página
+    event.preventDefault()
+
+    // Reunindo dados dos campos do formulário
+    const formData = {
+        opBalance: form.elements["opening-balance"].checked,
+        type: form.elements['type-movement'].value,
+        date: form.elements['date-movement'].value,
+        origin: form.elements['origin-movement'].value,
+        value: form.elements['value-movement'].value,
+        typeValue: form.elements['type-value-movement'].checked,
+        description: form.elements['description-movement'].value,
+    }
+
+    await formValidate(formData)
+        .then(async () => {
+            // Confirmação de salvamento
+            await Swal.fire({
+                title: 'Deseja realmente salvar?',
+                icon: 'question',
+                showDenyButton: true,
+                showConfirmButton: true,
+                confirmButtonText: 'Sim',
+                denyButtonText: `Não`,
+                confirmButtonColor: '#25678A',
+                denyButtonColor: '#E05757',
+                allowOutsideClick: false,
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    // Habilitando o loading para aguardar a resposta
+                    showLoading(true)
+
+                    if (formData.opBalance) {
+                        const findOpBalance = await window.movement.findOpBalance(formData.date)
+                        if (findOpBalance) {
+                            // Desabilitando o loading após a resposta
+                            showLoading(false)
+                            Swal.fire({ title: "Erro", text: 'Já existe um lançamento de Saldo inicial para este mês.', icon: 'error', allowOutsideClick: false })
+                            return
+                        }
+                    }
+
+                    // Enviando os dados para a Bridge
+                    const createMovement = await window.movement.create(formData)
+                        .then((response) => {
+                            // Desabilitando o loading após a resposta
+                            showLoading(false)
+                            Swal.fire({
+                                title: "Sucesso",
+                                text: `Registro salvo com sucesso! Deseja realizar outro lançamento?`,
+                                icon: 'success',
+                                footer: `Número: ${response.dataValues.id}`,
+                                showDenyButton: true,
+                                showConfirmButton: true,
+                                confirmButtonText: 'Sim',
+                                denyButtonText: `Não`,
+                                allowOutsideClick: false
+                            }).then(async (result) => {
+                                if (result.isDenied) {
+                                    // Fechando o modal
+                                    showModalInsert(false)
                                 } else if (result.isConfirmed) {
                                     // Resetando o formulário
                                     resetForm()

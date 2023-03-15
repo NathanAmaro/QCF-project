@@ -1,5 +1,4 @@
 async function formValidate(formData) {
-    console.log(formData)
 
     // Verificando se o saldo inicial ou tipo de movimento está informado
     if (!formData.opBalance && formData.type === '' ) {
