@@ -41,7 +41,6 @@ document.getElementById("export-movements-xlsx").addEventListener("click", async
         })
     }
 })
-
 // Adicionando evento de Click no botão de exportar movimentos em PDF
 document.getElementById("export-movements-pdf").addEventListener("click", async () => {
     const ref = getSelectedRef()
@@ -71,7 +70,6 @@ document.getElementById("export-movements-pdf").addEventListener("click", async 
         })
     }
 })
-
 // Adicionando evento de Click no botão de buscar movimentos
 document.getElementById("button-search-movements").addEventListener("click", async () => {
     const titRefTotalizers = document.getElementById('title-reference-totalizers');
@@ -89,7 +87,6 @@ document.getElementById("button-search-movements").addEventListener("click", asy
         showLoading(false)
     }
 })
-
 // Adicionando evento de Click no botão de inserir novo movimento
 document.getElementById("bt-new-register").addEventListener("click", () => {
     let dateMovementField = document.getElementById("date-movement")
@@ -101,7 +98,6 @@ document.getElementById("bt-new-register").addEventListener("click", () => {
     // Exibindo o modal
     showModalInsert(true)
 })
-
 // Adicionando evento de Change no select de ano da referência
 document.getElementById('select-year-reference').addEventListener("change", async (e) => {
     const selectMonth = document.getElementById('select-month-reference');
@@ -113,7 +109,6 @@ document.getElementById('select-year-reference').addEventListener("change", asyn
         selectMonth.disabled = false
     }
 })
-
 // Adicionando evento de Click no botão de pesquisar referências
 document.getElementById('bt-refind-references').addEventListener("click", async () => {
     resetRef('all')
@@ -127,13 +122,10 @@ document.getElementById('bt-refind-references').addEventListener("click", async 
 
 // Adicionando evento de Click no botão de fechar modal de inserir movimento
 document.getElementById("bt-close-modal-insert").addEventListener("click", () => showModalInsert(false))
-
 // Adicionando evento de Click no botão de cancelar modal de inserir movimento
 document.getElementById("bt-cancel-modal-insert").addEventListener("click", () => showModalInsert(false))
-
 // Adicionando evento de submit no formulário
 document.getElementById("form-modal").addEventListener("submit", (e) => formHandleInsert(e))
-
 // Adicionando evento Click no checkbox do Saldo Inicial
 document.getElementById("opening-balance").addEventListener("change", function (event) {
     let typeMovement = document.getElementById("type-movement")
@@ -141,21 +133,18 @@ document.getElementById("opening-balance").addEventListener("change", function (
 
     handleOpeningBalanceChange(event, typeMovement, switchTypeValueMovement)
 })
-
 // Adicionando evento Click no select do tipo de movimento
 document.getElementById("type-movement").addEventListener("change", function (e) {
     let switchTypeValueMovement = document.getElementById("switch-type-value-movement")
     // Escondendo o Switch do valor
     switchTypeValueMovement.style.display = "none"
 })
-
 // Adicionando evento Change no input do valor do movimento
 document.getElementById("value-movement").addEventListener("change", function (e) {
     let value = e.target.value
     // Setando duas casas decimais no valor informado
     e.target.value = parseFloat(value).toFixed(2)
 })
-
 // Adicionando evento Keydown no input do valor do movimento
 document.getElementById("value-movement").addEventListener("keydown", function (e) {
     let value = e.target.value
@@ -173,10 +162,8 @@ document.getElementById("value-movement").addEventListener("keydown", function (
 
 // Adicionando evento de Click no botão de fechar modal de alterar movimento
 document.getElementById("bt-close-modal-alter").addEventListener("click", () => showModalAlter(false))
-
 // Adicionando evento de Click no botão de cancelar modal de alterar movimento
 document.getElementById("bt-cancel-modal-alter").addEventListener("click", () => showModalAlter(false))
-
 // Adicionando evento Click no checkbox do Saldo Inicial
 document.getElementById("opening-balance-alter").addEventListener("change", function (event) {
     let typeMovement = document.getElementById("type-movement-alter")
@@ -185,19 +172,16 @@ document.getElementById("opening-balance-alter").addEventListener("change", func
     handleOpeningBalanceChange(event, typeMovement, switchTypeValueMovement)
 
 })
-
 // Adicionando evento Click no select do tipo de movimento
 document.getElementById("type-movement-alter").addEventListener("change", function (e) {
     let switchTypeValueMovement = document.getElementById("switch-type-value-movement-alter")
     // Escondendo o Switch do valor
     switchTypeValueMovement.style.display = "none"
 })
-
 // Adicionando evento Change no input do valor do movimento
 document.getElementById("value-movement-alter").addEventListener("change", function (event) {
     event.target.value = handleRoudValue(event.target.value)
 })
-
 // Adicionando evento Keydown no input do valor do movimento
 document.getElementById("value-movement-alter").addEventListener("keydown", function (event) {
     event.target.value = handleLengthValue(event.target.value, 7)
@@ -295,7 +279,6 @@ async function formHandleInsert(event) {
             Swal.fire({ title: "Erro", text: error.message, icon: 'error', allowOutsideClick: false })
         })
 }
-
 // Função que lida com o Submit do Formulário de alterar movimento
 async function formHandleAlter(event) {
     let form = document.getElementById("form-modal");
@@ -409,7 +392,6 @@ function handleOpeningBalanceChange(event, typeMovement, switchTypeValueMovement
         typeMovement.disabled = false
     }
 }
-
 /**
  * @description Função que lida com a conversão de um valor para duas casas decimais
  * @param {string} value Valor que será convertido para duas casas decimais
@@ -417,7 +399,6 @@ function handleOpeningBalanceChange(event, typeMovement, switchTypeValueMovement
 function handleRoudValue(value) {
     return value = parseFloat(value).toFixed(2)
 }
-
 /**
  * @description Função que lida com o tamanho de um Valor
  * @param {string} value Valor que será verificado
@@ -430,7 +411,6 @@ function handleLengthValue(value, length) {
         return value
     }
 }
-
 /**
  * @description Função que valida os campos necessários para envio do formulário
  * @param {object} formData 
@@ -468,7 +448,6 @@ async function formValidate(formData) {
     }
 
 }
-
 /**
  * @description Função que lida com o reinício do formulário de inserir movimento
  */
@@ -484,7 +463,6 @@ function resetFormInsert() {
     // Resetando as informações do formulário
     form.reset()
 }
-
 /**
  * @description Função que lida com o reinício do formulário de alterar movimento
  */
@@ -559,7 +537,6 @@ async function deleteMov(event) {
         })
     }
 }
-
 /**
  * 
  * @param {event} event Evento disparado pelo click do botão de alterar movimento localizado na tabela de movimentos
@@ -577,10 +554,9 @@ async function alterMov(event) {
         showModalAlter(true)
     }
 }
-
 /**
  * @description Função que lida com a busca e geração de linhas na tabela de movimentos
- * @param {array} reference Objeto contendo o ano e mês da referência. Ex.: {year: 2023, month: 1}
+ * @param {object} reference Objeto contendo o ano e mês da referência. Ex.: {year: 2023, month: 1}
  */
 async function genMovsTable(reference) {
     await window.movement.findMovs(reference)
@@ -611,7 +587,6 @@ async function genMovsTable(reference) {
         Swal.fire({ title: "Erro", text: `Erro ao tentar localizar movimentos. Especificação do erro: ${error.message}`, icon: 'error', allowOutsideClick: false })
     })
 }
-
 /**
  * @description Função que lida com a busca das referências no banco de dados e preenche os combobox
  * @param {string} type Opções: 'years'; 'months' 
@@ -651,8 +626,10 @@ async function findReferences(type, year) {
     }
     showLoading(false)
 }
-
-// Função que busca os totais de despesa e receita dos movimentos da referência
+/**
+ * @description Função que busca os totais de despesa e receita dos movimentos da referência
+ * @param {object} reference Objeto contendo o ano e mês da referência. Ex.: {year: 2023, month: 1}
+ */
 async function calValuesMovs(reference) {
     const totalReceit = document.getElementById('total-receit')
     const totalDesp = document.getElementById('total-desp')
@@ -689,7 +666,6 @@ function removeOptions(selectId) {
         }
     })
 }
-
 /**
  * @description Função que controla o modal de loading
  * @param {boolean} param
@@ -706,7 +682,6 @@ function showLoading(param) {
     }
 
 }
-
 /**
  * @description Função que abre ou fecha o modal de inserir movimento
  * @param {boolean} param Esperado: true, false
@@ -725,7 +700,6 @@ function showModalInsert(param) {
     }
 
 }
-
 /**
  * @description Função que abre ou fecha o modal de alterar movimento
  * @param {boolean} param Esperado: true, false
@@ -744,7 +718,6 @@ function showModalAlter(param) {
     }
 
 }
-
 /**
  * @description Função que lida com a captura das informações da referência selecionada
  * @returns {object} Retorna um objeto contendo o ano e o mês da referência selecionada
@@ -768,7 +741,6 @@ function getSelectedRef() {
     }
     return undefined
 }
-
 /**
  * @description Função que reseta os campos da referência
  * @param {string} type Opções: 'year'; 'month'; 'all'
