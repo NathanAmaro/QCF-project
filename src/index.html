@@ -10,7 +10,7 @@
     <title>Quadro de Controle Financeiro</title>
 </head>
 
-<body>
+<body id="body">
     <div class="user-name-float">
         <img src="../build/user-bold-blue-200.svg" width="26" height="26" alt="Icon user name" />
         <span id="username-element"></span>
@@ -192,12 +192,12 @@
                 </div>
                 <div class="main-modal-row">
                     <div class="container-opening-balance">
-                        <input type="checkbox" id="opening-balance" class="input-opening-balance"/>
+                        <input type="checkbox" id="opening-balance-alter" class="input-opening-balance"/>
                         <label for="opening-balance">Saldo inicial</label>
                     </div>
                     <div class="container-input-modal">
                         <h6 class="title-input-modal">Tipo</h6>
-                        <select class="input-select-type-modal" id="type-movement">
+                        <select class="input-select-type-modal" id="type-movement-alter">
                             <option value="" selected disabled hidden>Selecione</option>
                             <option value="D">Despesa</option>
                             <option value="R">Receita</option>
@@ -205,30 +205,30 @@
                     </div>
                     <div class="container-input-modal">
                         <h6 class="title-input-modal">Data</h6>
-                        <input type="date" class="input-date-modal" id="date-movement"/>
+                        <input type="date" class="input-date-modal" id="date-movement-alter"/>
                     </div>
                     <div class="container-input-modal">
                         <h6 class="title-input-modal">Origem</h6>
-                        <input type="text" class="input-origin-modal" placeholder="Origem" id="origin-movement"/>
+                        <input type="text" class="input-origin-modal" placeholder="Origem" id="origin-movement-alter"/>
                     </div>
                     <div class="container-input-modal">
                         <div style="display: flex; justify-content: space-between;">
                             <h6 class="title-input-modal">Valor</h6>
-                            <label class="switch" id="switch-type-value-movement">
-                                <input type="checkbox" checked id="type-value-movement">
+                            <label class="switch" id="switch-type-value-movement-alter">
+                                <input type="checkbox" checked id="type-value-movement-alter">
                                 <span class="slider round"></span>
                             </label>
                         </div>
                         <div class="container-input-value-movement">
                             R$
-                            <input type="number" class="input-value-modal" placeholder="0,00" id="value-movement" step="any" maxlength="10"/>
+                            <input type="number" class="input-value-modal" placeholder="0,00" id="value-movement-alter" step="any" maxlength="10"/>
                         </div>
                     </div>
                 </div>
                 <div class="main-modal-row">
                     <div class="container-textarea-modal">
                         <h6 class="title-input-modal">Descrição</h6>
-                        <textarea class="textarea-modal" placeholder="Descrição" id="description-movement"></textarea>
+                        <textarea class="textarea-modal" placeholder="Descrição" id="description-movement-alter"></textarea>
                     </div>
                 </div>
                 <div class="footer-modal">
@@ -245,11 +245,9 @@
     </div>
 </body>
 <!-- Adicionando o arquivo do renderer -->
-<script src="renderer.js"></script>
-<!-- Adicionando o arquivo responsável por validar as informações do formulário -->
-<script src="./js/formValidate.js"></script>
+<script language="Javascript" src="renderer.js"></script>
 <!-- Adicionando o arquivo da biblioteca Sweetalert2 -->
-<script src="./js/sweetalert2.min.js"></script>
+<script src="./js/libs/sweetalert2.min.js"></script>
 <!-- Adicionando o arquivo da biblioteca Moment.js -->
-<script src="./js/moment-with-locales.min.js"></script>
+<script src="./js/libs/moment-with-locales.min.js"></script>
 </html>
