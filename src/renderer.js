@@ -77,18 +77,17 @@ document.getElementById("button-search-movements").addEventListener("click", asy
     const titRefTotalizers = document.getElementById('title-reference-totalizers');
 
     const ref = getSelectedRef()
-    let convertMonth = moment(`01/${ref.month}/2023`, 'DD/MM/YYYY').locale('pt-br').format('MMMM')
-
-    if (!ref) {
+    
+    if (!ref) { // Se a referência não estiver selecionada
         titRefTotalizers.innerHTML = ''
-    } else {
+    } else { // Se a referência estiver selecionada
+        let convertMonth = moment(`01/${ref.month}/2023`, 'DD/MM/YYYY').locale('pt-br').format('MMMM')
         titRefTotalizers.innerHTML = `${convertMonth[0].toUpperCase()}${convertMonth.slice(1)} de ${ref.year}`
+        showLoading(true)
+        await calValuesMovs(ref)
+        await genMovsTable(ref)
+        showLoading(false)
     }
-
-    showLoading(true)
-    await calValuesMovs(ref)
-    await genMovsTable(ref)
-    showLoading(false)
 })
 
 // Adicionando evento de Click no botão de inserir novo movimento
