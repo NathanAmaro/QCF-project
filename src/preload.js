@@ -7,6 +7,7 @@ contextBridge.exposeInMainWorld('configBridge', {
 contextBridge.exposeInMainWorld('movement', {
     create: (formData) => ipcRenderer.invoke('create-movement', formData),
     delete: (id) => ipcRenderer.invoke('delete-movement', id),
+    update: (id, formData) => ipcRenderer.invoke('update-movement', id, formData),
     find: (id) => ipcRenderer.invoke('find-movement', id),
     findOpBalance: (date) => ipcRenderer.invoke('find-opening-balance', date),
     findMovs: (reference) => ipcRenderer.invoke('find-movements', reference),

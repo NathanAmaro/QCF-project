@@ -164,6 +164,8 @@ document.getElementById("value-movement").addEventListener("keydown", function (
 document.getElementById("bt-close-modal-alter").addEventListener("click", () => showModalAlter(false))
 // Adicionando evento de Click no botão de cancelar modal de alterar movimento
 document.getElementById("bt-cancel-modal-alter").addEventListener("click", () => showModalAlter(false))
+// Adicionando evento de submit no formulário
+document.getElementById("form-modal-alter").addEventListener("submit", (e) => formHandleAlter(e))
 // Adicionando evento Click no checkbox do Saldo Inicial
 document.getElementById("opening-balance-alter").addEventListener("change", function (event) {
     let typeMovement = document.getElementById("type-movement-alter")
@@ -193,7 +195,10 @@ document.getElementById("value-movement-alter").addEventListener("keydown", func
 
 /* Form submit functions */
 
-// Função que lida com o Submit do Formulário de inserir movimento
+/**
+ * @description Função que lida com o Submit do Formulário de inserir movimento
+ * @param {event} event Capturando o evento de submit do formulário
+ */
 async function formHandleInsert(event) {
     let form = document.getElementById("form-modal");
     // Evitando que o formulário recarregue a página
@@ -280,29 +285,35 @@ async function formHandleInsert(event) {
             Swal.fire({ title: "Erro", text: error.message, icon: 'error', allowOutsideClick: false })
         })
 }
-// Função que lida com o Submit do Formulário de alterar movimento
+
+/**
+ * @description Função que lida com o Submit do Formulário de alterar movimento
+ * @param {event} event Capturando o evento de submit do formulário
+ */
 async function formHandleAlter(event) {
-    let form = document.getElementById("form-modal");
+    const form = document.getElementById("form-modal-alter");
+    const idMov = document.getElementById('id-mov-alter-modal').innerHTML
     // Evitando que o formulário recarregue a página
     event.preventDefault()
 
     // Reunindo dados dos campos do formulário
     const formData = {
-        opBalance: form.elements["opening-balance"].checked,
-        type: form.elements['type-movement'].value,
-        date: form.elements['date-movement'].value,
-        origin: form.elements['origin-movement'].value,
-        value: form.elements['value-movement'].value,
-        typeValue: form.elements['type-value-movement'].checked,
-        description: form.elements['description-movement'].value,
+        opBalance: form.elements["opening-balance-alter"].checked,
+        type: form.elements['type-movement-alter'].value,
+        date: form.elements['date-movement-alter'].value,
+        origin: form.elements['origin-movement-alter'].value,
+        value: form.elements['value-movement-alter'].value,
+        typeValue: form.elements['type-value-movement-alter'].checked,
+        description: form.elements['description-movement-alter'].value,
     }
 
     await formValidate(formData)
         .then(async () => {
             // Confirmação de salvamento
             await Swal.fire({
-                title: 'Deseja realmente salvar?',
+                title: 'Deseja realmente alterar?',
                 icon: 'question',
+                footer: `Número: ${idMov}`,
                 showDenyButton: true,
                 showConfirmButton: true,
                 confirmButtonText: 'Sim',
@@ -318,48 +329,41 @@ async function formHandleAlter(event) {
                     if (formData.opBalance) {
                         const findOpBalance = await window.movement.findOpBalance(formData.date)
                         if (findOpBalance) {
-                            // Desabilitando o loading após a resposta
-                            showLoading(false)
-                            Swal.fire({ title: "Erro", text: 'Já existe um lançamento de Saldo inicial para este mês.', icon: 'error', allowOutsideClick: false })
-                            return
+                            if (findOpBalance.dataValues.id != idMov) {
+                                // Desabilitando o loading após a resposta
+                                showLoading(false)
+                                Swal.fire({ title: "Erro", text: 'Já existe um lançamento de Saldo inicial para este mês.', icon: 'error', allowOutsideClick: false })
+                                return
+                            }
                         }
                     }
-
+                    
                     // Enviando os dados para a Bridge
-                    const createMovement = await window.movement.create(formData)
+                    const movement = await window.movement.update(idMov, formData)
                         .then((response) => {
                             // Desabilitando o loading após a resposta
                             showLoading(false)
                             Swal.fire({
                                 title: "Sucesso",
-                                text: `Registro salvo com sucesso! Deseja realizar outro lançamento?`,
+                                text: `Registro alterado com sucesso!`,
                                 icon: 'success',
-                                footer: `Número: ${response.dataValues.id}`,
-                                showDenyButton: true,
-                                showConfirmButton: true,
-                                confirmButtonText: 'Sim',
-                                denyButtonText: `Não`,
+                                footer: `Número: ${idMov}`,
                                 allowOutsideClick: false
                             }).then(async (result) => {
-                                if (result.isDenied) {
-                                    // Fechando o modal
-                                    showModalInsert(false)
-                                } else if (result.isConfirmed) {
-                                    // Resetando o formulário
-                                    resetFormAlter()
-                                    // setando a data atual no campo de Data
-                                    form.elements['date-movement'].value = moment().format("YYYY-MM-DD")
-                                }
+                                showModalAlter(false)
+                                // Resetando o formulário
+                                resetFormAlter()
                             })
                         })
                         .catch((error) => {
                             // Desabilitando o loading após a resposta
                             showLoading(false)
 
-                            Swal.fire({ title: "Erro", text: `Erro ao tentar salvar o registro. Especificação do erro: ${error.message}`, icon: 'error', allowOutsideClick: false })
+                            Swal.fire({ title: "Erro", text: `Erro ao tentar alterar o registro. Especificação do erro: ${error.message}`, icon: 'error', allowOutsideClick: false })
                         })
+                        
                 } else if (result.isDenied) {
-                    Swal.fire({ title: "Informação", text: 'O registro não foi salvo.', icon: 'info', allowOutsideClick: false })
+                    Swal.fire({ title: "Informação", text: 'O registro não foi alterado.', icon: 'info', allowOutsideClick: false })
                 }
             })
         })

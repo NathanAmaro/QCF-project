@@ -152,7 +152,7 @@ ipcMain.handle('delete-movement', async (event, id) => {
     }
 })
 
-// Ponte que altera informações do moviment
+// Ponte que altera informações do movimento
 ipcMain.handle('update-movement', async (event, idMov, formData) => {
     // Formatando a data do movimento
     const dateFormated = moment(formData.date, 'YYYY-MM-DD').format('DD/MM/YYYY')
@@ -181,7 +181,6 @@ ipcMain.handle('update-movement', async (event, idMov, formData) => {
                 id: idMov
             }
         })
-        return movement
     } catch (err) {
         throw new Error(err.message)
     }
