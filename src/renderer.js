@@ -131,7 +131,7 @@ document.getElementById("opening-balance").addEventListener("change", function (
     let typeMovement = document.getElementById("type-movement")
     let switchTypeValueMovement = document.getElementById("switch-type-value-movement")
 
-    handleOpeningBalanceChange(event, typeMovement, switchTypeValueMovement)
+    handleOpeningBalanceChange(event.target.checked, typeMovement, switchTypeValueMovement)
 })
 // Adicionando evento Click no select do tipo de movimento
 document.getElementById("type-movement").addEventListener("change", function (e) {
@@ -169,7 +169,8 @@ document.getElementById("opening-balance-alter").addEventListener("change", func
     let typeMovement = document.getElementById("type-movement-alter")
     let switchTypeValueMovement = document.getElementById("switch-type-value-movement-alter")
 
-    handleOpeningBalanceChange(event, typeMovement, switchTypeValueMovement)
+    handleOpeningBalanceChange(event.target.checked, typeMovement, switchTypeValueMovement)
+    
 
 })
 // Adicionando evento Click no select do tipo de movimento
@@ -374,12 +375,12 @@ async function formHandleAlter(event) {
 
 /**
  * @description Função que lida com a mudança no estado do checkbox de Saldo inicial, modificando os campos necessários.
- * @param {event} event Recebe o evento disparado pelo checkbox de Saldo inicial
+ * @param {boolean} param Parâmetro que controla a função
  * @param {element} typeMovement Recebe o combobox do Tipo de movimento
  * @param {element} switchTypeValueMovement Recebe o switch do Tipo de movimento
  */
-function handleOpeningBalanceChange(event, typeMovement, switchTypeValueMovement) {
-    if (event.target.checked) {
+function handleOpeningBalanceChange(param, typeMovement, switchTypeValueMovement) {
+    if (param) {
         // Mostrando o Switch do valor
         switchTypeValueMovement.style.display = "block"
         // Desabilitando a seleção do tipo e voltando ao valor padrão
@@ -547,11 +548,46 @@ async function alterMov(event) {
     const tr = td.parentElement
     const idColumn = tr.children['td-id-movement']
     const numberField = document.getElementById('id-mov-alter-modal')
+    const form = document.getElementById("form-modal-alter")
+    const typeMovement = document.getElementById("type-movement-alter")
+    const switchTypeValueMovement = document.getElementById("switch-type-value-movement-alter")
+
     if (idColumn) {
+        showLoading(true)
         const idMov = idColumn.innerHTML
-        numberField.innerHTML = idMov
-        console.log(idMov)
-        showModalAlter(true)
+
+        // Consultando a ponte
+        await window.movement.find(idMov)
+        .then((res) => {
+            if(res){
+                const values = res.dataValues
+                
+                // Setando o número do movimento na tela de alteração
+                numberField.innerHTML = idMov
+                // Habilitando o switch de valor caso o movimento seja de Saldo inicial
+                handleOpeningBalanceChange(values.openingBalance, typeMovement, switchTypeValueMovement)
+
+                // Setando os valores recuperados do banco de dados nos campos do formulário
+                form.elements['opening-balance-alter'].checked = values.openingBalance
+                form.elements['type-movement-alter'].value = values.openingBalance ? '' : values.type === 'Despesa' ? 'D' : 'R'
+                form.elements['date-movement-alter'].value = moment(values.date, 'DD-MM-YYYY').format('YYYY-MM-DD')
+                form.elements['origin-movement-alter'].value = values.origin
+                form.elements['value-movement-alter'].value = handleRoudValue(values.value)
+                form.elements['type-value-movement-alter'].checked = values.type === 'Despesa' ? true : false
+                form.elements['description-movement-alter'].value = values.description
+
+                showLoading(false)
+                showModalAlter(true)
+            }else{
+                throw new Error('Nenhum resultado encontrado para o ID selecionado.')
+            }
+        })
+        .catch((error) => {
+            showLoading(false)
+            Swal.fire({ title: "Erro", text: `Erro ao tentar localizar o registro. Especificação do erro: ${error.message}`, icon: 'error', allowOutsideClick: false })
+        })
+    } else {
+        Swal.fire({ title: "Erro", text: `Não foi possível capturar o número do movimento.`, icon: 'error', allowOutsideClick: false })
     }
 }
 /**

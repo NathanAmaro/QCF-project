@@ -119,6 +119,21 @@ ipcMain.handle('create-movement', async (event, formData) => {
     }
 })
 
+// Ponte que busca informações de um movimento por seu ID
+ipcMain.handle('find-movement', async (event, idMov) => {
+    try {
+        const movement = await Movement.findOne({
+            where: {
+                id: idMov
+            }
+        })
+
+        return movement
+    } catch (err) {
+        throw new Error(err.message)
+    }
+})
+
 // Criando a ponte create-movement
 ipcMain.handle('delete-movement', async (event, id) => {
 
@@ -131,6 +146,41 @@ ipcMain.handle('delete-movement', async (event, id) => {
 
         db.query("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='movements'");
 
+        return movement
+    } catch (err) {
+        throw new Error(err.message)
+    }
+})
+
+// Ponte que altera informações do moviment
+ipcMain.handle('update-movement', async (event, idMov, formData) => {
+    // Formatando a data do movimento
+    const dateFormated = moment(formData.date, 'YYYY-MM-DD').format('DD/MM/YYYY')
+
+    // Formatando o tipo de movimento
+    const typeFormated = () => {
+        if (!formData.opBalance) { // Se não for um lançamento de saldo inicial
+            let type = formData.type === 'D' ? 'Despesa' : 'Receita'
+            return type
+        } else { // Se for um lançamento de saldo inicial
+            let type = formData.typeValue === true ? 'Despesa' : 'Receita'
+            return type
+        }
+    }
+
+    try {
+        const movement = await Movement.update({
+            openingBalance: formData.opBalance,
+            date: dateFormated,
+            type: typeFormated(),
+            origin: formData.origin,
+            value: formData.value,
+            description: formData.description,
+        }, {
+            where: {
+                id: idMov
+            }
+        })
         return movement
     } catch (err) {
         throw new Error(err.message)
