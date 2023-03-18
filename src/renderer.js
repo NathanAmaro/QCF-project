@@ -64,7 +64,7 @@ document.getElementById("export-movements-pdf").addEventListener("click", async 
                     })
                     .catch((err) => {
                         showLoading(false)
-                        Swal.fire({ title: "Erro", text: 'Ocorreu um erro ao processar o arquivo.', icon: 'error', allowOutsideClick: false })
+                        Swal.fire({ title: "Informação", text: err.message.slice(52), icon: 'info', allowOutsideClick: false })
                     })
             }
         })
@@ -651,6 +651,7 @@ async function findReferences(type, year) {
     } else if (type === 'months') {
         // Consultando a ponte
         const findMonthsResp = await window.movement.findMonths(year)
+        console.log(findMonthsResp)
 
         // Percorrendo e preenchendo a lista de meses
         findMonthsResp.map((month) => {

@@ -17,7 +17,3 @@ contextBridge.exposeInMainWorld('movement', {
     exportXlsx: (reference) => ipcRenderer.invoke('gen-xlsx-file', reference),
     exportPdf: (reference, totalizers) => ipcRenderer.invoke('gen-pdf-file', reference, totalizers)
 })
-
-contextBridge.exposeInMainWorld('reports', {
-    msgRMM: () => ipcRenderer.invoke('path-selected')
-})

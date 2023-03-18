@@ -25,7 +25,7 @@ const createWindow = () => {
     mainWindow.loadFile('src/index.html')
 
     // Removendo a menu bar
-    mainWindow.setMenu(null)
+    //mainWindow.setMenu(null)
 
     // Abrir janela maximizada
     mainWindow.maximize()
@@ -373,6 +373,8 @@ ipcMain.handle('gen-xlsx-file', async (event, reference) => {
 
 // Ponte que gera o arquivo PDF dos movimentos da referência selecionada
 ipcMain.handle('gen-pdf-file', async (event, reference, totalizers) => {
+
+    ipcMain.removeAllListeners(['gen-pdf-file'])
     
     // Lendo o arquivo config.json e salvando em uma variável
     const rawconfig = fs.readFileSync(path.join(__dirname, '../config.json'));
@@ -421,12 +423,13 @@ ipcMain.handle('gen-pdf-file', async (event, reference, totalizers) => {
                     }
                 }, result.filePaths)
                 .then((res) => {
-                    ipcMain.handle('path-selected', () => true)
                     return 'Arquivo gerado com sucesso!'
                 })
                 .catch((err) => {
                     throw new Error(err.message)
                 })
+            } else {
+                throw new Error('Operação cancelada')
             }
 
         }).catch(err => {
