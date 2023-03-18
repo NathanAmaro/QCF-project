@@ -71,7 +71,7 @@ ipcMain.handle('config', () => {
 
 // Ponte que consulta o saldo de abertura do mês
 ipcMain.handle('find-opening-balance', async (event, date) => {
-    console.log(date)
+    
     try {
         const movement = await Movement.findOne({
             where: {

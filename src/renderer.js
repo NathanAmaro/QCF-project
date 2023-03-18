@@ -33,7 +33,7 @@ document.getElementById("export-movements-xlsx").addEventListener("click", async
         }).then(async (result) => {
             if (result.isConfirmed) {
                 const returnExportXlsx = await window.movement.exportXlsx(ref)
-                console.log(returnExportXlsx)
+                
                 if (returnExportXlsx) {
                     Swal.fire({ title: "Informação", text: 'Arquivo gerado com sucesso.', icon: 'info', allowOutsideClick: false })
                 }
@@ -651,7 +651,6 @@ async function findReferences(type, year) {
     } else if (type === 'months') {
         // Consultando a ponte
         const findMonthsResp = await window.movement.findMonths(year)
-        console.log(findMonthsResp)
 
         // Percorrendo e preenchendo a lista de meses
         findMonthsResp.map((month) => {
