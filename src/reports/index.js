@@ -8,8 +8,9 @@ const moment = require('moment')
 
 
 const RMMReport = async (data, pathFile) => {
-    const fileName = moment().format('DD-MM-YYYY-HH-mm')
-
+    const fileName = moment().format('DD-MM-YYYY-HH-mm-ss')
+    console.log(fileName)
+    
     try {
         const templatePath = path.join(__dirname, './templates/rmm-report/index.html');
         var fileRead = await readFile(templatePath, 'utf8');
