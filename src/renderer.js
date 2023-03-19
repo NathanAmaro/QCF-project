@@ -40,9 +40,9 @@ document.getElementById("export-movements-xlsx").addEventListener("click", async
 // Adicionando evento de Click no botão de exportar movimentos em PDF
 document.getElementById("export-movements-pdf").addEventListener("click", async () => {
     const ref = getSelectedRef()
-    const calcValuesResp = await window.movement.calcValues(ref)
-
+    
     if (ref) {
+        const calcValuesResp = await window.movement.calcValues(ref)
         Swal.fire({
             title: "Aviso",
             text: `Selecione o caminho para salvar o arquivo.`,
