@@ -12,8 +12,17 @@
 
 <body id="body">
     <div class="user-name-float">
-        <img src="../build/user-bold-blue-200.svg" width="26" height="26" alt="Icon user name" />
-        <span id="username-element"></span>
+        <div class="container-alter-username">
+            <img src="../build/user-bold-blue-200.svg" width="22" height="22"
+                alt="Icon user name" />
+            <span id="username-element" class="username-element">Nome do usuário</span>
+        </div>
+        <div class="menu-username" id="menu-username">
+            <input type="text" id="input-username" class="input-username" placeholder="Nome"/>
+            <button id="bt-send-alter-username" class="bt-send-alter-username">
+                Alterar
+            </button>
+        </div>
     </div>
     <header>
         <h1 class="header-title">Quadro de Controle Financeiro</h1>

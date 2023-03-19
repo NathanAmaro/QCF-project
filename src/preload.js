@@ -1,7 +1,8 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
-contextBridge.exposeInMainWorld('configBridge', {
-    config: () => ipcRenderer.invoke('config')
+contextBridge.exposeInMainWorld('config', {
+    getConfig: () => ipcRenderer.invoke('get-config'),
+    alterUsername: (name) => ipcRenderer.invoke('alter-username', name)
 })
 
 contextBridge.exposeInMainWorld('movement', {

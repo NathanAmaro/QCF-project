@@ -6,7 +6,6 @@ const path = require('path')
 const fs = require('fs')
 const db = require('./models/db')
 const Movement = require('./models/movementModel')
-
 const RMMReport = require('./reports')
 
 const createWindow = () => {
@@ -62,11 +61,21 @@ const syncDB = async () => {
 syncDB()
 
 // Criando a ponte config
-ipcMain.handle('config', () => {
+ipcMain.handle('get-config', () => {
     // Lendo o arquivo config.json e exportando em uma variável
     var rawconfig = fs.readFileSync(path.join(__dirname, '../config.json'));
     var configJSON = JSON.parse(rawconfig);
     return configJSON
+})
+
+// Criando a ponte que altera o nome do usuário no arquivo config
+ipcMain.handle('alter-username', (event, name) => {
+    const data = {
+        username: name
+    }
+
+    // Escrevendo o username no arquivo config
+    fs.writeFileSync(path.join(__dirname, '../config.json'), JSON.stringify(data, ['username'], 4), 'utf-8');
 })
 
 // Ponte que consulta o saldo de abertura do mês

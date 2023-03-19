@@ -1,12 +1,8 @@
 // Execuções iniciais ao abrir o sistema
 const initialVerif = async () => {
 
-    // Requisitando as configurações iniciais
-    await window.configBridge.config()
-        .then(async (resp) => {
-            const usernameElement = document.getElementById('username-element')
-            usernameElement.innerText = resp.username
-        })
+    // Lidando com o nome do usuário
+    await handleUsernamer()
 
     // Requisitando os anos para preencher na referência
     await findReferences('years')
@@ -33,7 +29,7 @@ document.getElementById("export-movements-xlsx").addEventListener("click", async
         }).then(async (result) => {
             if (result.isConfirmed) {
                 const returnExportXlsx = await window.movement.exportXlsx(ref)
-                
+
                 if (returnExportXlsx) {
                     Swal.fire({ title: "Informação", text: 'Arquivo gerado com sucesso.', icon: 'info', allowOutsideClick: false })
                 }
@@ -75,7 +71,7 @@ document.getElementById("button-search-movements").addEventListener("click", asy
     const titRefTotalizers = document.getElementById('title-reference-totalizers');
 
     const ref = getSelectedRef()
-    
+
     if (!ref) { // Se a referência não estiver selecionada
         titRefTotalizers.innerHTML = ''
     } else { // Se a referência estiver selecionada
@@ -113,6 +109,18 @@ document.getElementById('select-year-reference').addEventListener("change", asyn
 document.getElementById('bt-refind-references').addEventListener("click", async () => {
     resetRef('all')
     await findReferences('years')
+})
+// Adicionando evento de Click no botão de alterar nome do usuário
+document.getElementById('bt-send-alter-username').addEventListener("click", async () => {
+    const inputUsername = document.getElementById('input-username')
+
+    if (inputUsername.value) {
+        await window.config.alterUsername(inputUsername.value)
+            .then(async (res) => {
+                await handleUsernamer()
+                inputUsername.value = ''
+            })
+    }
 })
 
 
@@ -172,7 +180,7 @@ document.getElementById("opening-balance-alter").addEventListener("change", func
     let switchTypeValueMovement = document.getElementById("switch-type-value-movement-alter")
 
     handleOpeningBalanceChange(event.target.checked, typeMovement, switchTypeValueMovement)
-    
+
 
 })
 // Adicionando evento Click no select do tipo de movimento
@@ -337,7 +345,7 @@ async function formHandleAlter(event) {
                             }
                         }
                     }
-                    
+
                     // Enviando os dados para a Bridge
                     const movement = await window.movement.update(idMov, formData)
                         .then((response) => {
@@ -361,7 +369,7 @@ async function formHandleAlter(event) {
 
                             Swal.fire({ title: "Erro", text: `Erro ao tentar alterar o registro. Especificação do erro: ${error.message}`, icon: 'error', allowOutsideClick: false })
                         })
-                        
+
                 } else if (result.isDenied) {
                     Swal.fire({ title: "Informação", text: 'O registro não foi alterado.', icon: 'info', allowOutsideClick: false })
                 }
@@ -562,34 +570,34 @@ async function alterMov(event) {
 
         // Consultando a ponte
         await window.movement.find(idMov)
-        .then((res) => {
-            if(res){
-                const values = res.dataValues
-                
-                // Setando o número do movimento na tela de alteração
-                numberField.innerHTML = idMov
-                // Habilitando o switch de valor caso o movimento seja de Saldo inicial
-                handleOpeningBalanceChange(values.openingBalance, typeMovement, switchTypeValueMovement)
+            .then((res) => {
+                if (res) {
+                    const values = res.dataValues
 
-                // Setando os valores recuperados do banco de dados nos campos do formulário
-                form.elements['opening-balance-alter'].checked = values.openingBalance
-                form.elements['type-movement-alter'].value = values.openingBalance ? '' : values.type === 'Despesa' ? 'D' : 'R'
-                form.elements['date-movement-alter'].value = moment(values.date, 'DD-MM-YYYY').format('YYYY-MM-DD')
-                form.elements['origin-movement-alter'].value = values.origin
-                form.elements['value-movement-alter'].value = handleRoudValue(values.value)
-                form.elements['type-value-movement-alter'].checked = values.type === 'Despesa' ? true : false
-                form.elements['description-movement-alter'].value = values.description
+                    // Setando o número do movimento na tela de alteração
+                    numberField.innerHTML = idMov
+                    // Habilitando o switch de valor caso o movimento seja de Saldo inicial
+                    handleOpeningBalanceChange(values.openingBalance, typeMovement, switchTypeValueMovement)
 
+                    // Setando os valores recuperados do banco de dados nos campos do formulário
+                    form.elements['opening-balance-alter'].checked = values.openingBalance
+                    form.elements['type-movement-alter'].value = values.openingBalance ? '' : values.type === 'Despesa' ? 'D' : 'R'
+                    form.elements['date-movement-alter'].value = moment(values.date, 'DD-MM-YYYY').format('YYYY-MM-DD')
+                    form.elements['origin-movement-alter'].value = values.origin
+                    form.elements['value-movement-alter'].value = handleRoudValue(values.value)
+                    form.elements['type-value-movement-alter'].checked = values.type === 'Despesa' ? true : false
+                    form.elements['description-movement-alter'].value = values.description
+
+                    showLoading(false)
+                    showModalAlter(true)
+                } else {
+                    throw new Error('Nenhum resultado encontrado para o ID selecionado.')
+                }
+            })
+            .catch((error) => {
                 showLoading(false)
-                showModalAlter(true)
-            }else{
-                throw new Error('Nenhum resultado encontrado para o ID selecionado.')
-            }
-        })
-        .catch((error) => {
-            showLoading(false)
-            Swal.fire({ title: "Erro", text: `Erro ao tentar localizar o registro. Especificação do erro: ${error.message}`, icon: 'error', allowOutsideClick: false })
-        })
+                Swal.fire({ title: "Erro", text: `Erro ao tentar localizar o registro. Especificação do erro: ${error.message}`, icon: 'error', allowOutsideClick: false })
+            })
     } else {
         Swal.fire({ title: "Erro", text: `Não foi possível capturar o número do movimento.`, icon: 'error', allowOutsideClick: false })
     }
@@ -600,16 +608,16 @@ async function alterMov(event) {
  */
 async function genMovsTable(reference) {
     await window.movement.findMovs(reference)
-    .then((resp) => {
-        const lineBodyTable = document.getElementById("table-body");
+        .then((resp) => {
+            const lineBodyTable = document.getElementById("table-body");
 
-        // Limpando as linhas antes de gerar novas linhas
-        lineBodyTable.innerHTML = ''
+            // Limpando as linhas antes de gerar novas linhas
+            lineBodyTable.innerHTML = ''
 
-        resp.map((movement) => {
-            const element = document.createElement('div')
-            element.classList.add('table-tr')
-            element.innerHTML = `
+            resp.map((movement) => {
+                const element = document.createElement('div')
+                element.classList.add('table-tr')
+                element.innerHTML = `
                 <div class="table-td">
                     <button class="bt-delete-mov" onclick="deleteMov(event)"><img src="../build/trash-fill-red-500.svg" width="20" height="20" alt="Icon trash" /></button>
                     <button class="bt-edit-mov" onclick="alterMov(event)"><img src="../build/pencil-fill-blue-500.svg" width="20" height="20" alt="Icon trash" /></button>
@@ -621,11 +629,11 @@ async function genMovsTable(reference) {
                 <div class="table-td">${movement.description}</div>
                 <div class="table-td">R$ ${parseFloat(movement.value).toFixed(2).toString().replace('.', ',')}</div>
             `
-            lineBodyTable.appendChild(element)
+                lineBodyTable.appendChild(element)
+            })
+        }).catch((error) => {
+            Swal.fire({ title: "Erro", text: `Erro ao tentar localizar movimentos. Especificação do erro: ${error.message}`, icon: 'error', allowOutsideClick: false })
         })
-    }).catch((error) => {
-        Swal.fire({ title: "Erro", text: `Erro ao tentar localizar movimentos. Especificação do erro: ${error.message}`, icon: 'error', allowOutsideClick: false })
-    })
 }
 /**
  * @description Função que lida com a busca das referências no banco de dados e preenche os combobox
@@ -689,7 +697,16 @@ async function calValuesMovs(reference) {
         tableFooterTd.classList.add('desp-color')
     }
 }
-
+/**
+ * @description Função que lida com o nome do usuário, buscando das configurações e setando no campo
+ */
+async function handleUsernamer() {
+    await window.config.getConfig()
+        .then(async (resp) => {
+            const usernameElement = document.getElementById('username-element')
+            usernameElement.innerText = resp.username
+        })
+}
 
 
 
