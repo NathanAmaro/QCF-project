@@ -566,10 +566,17 @@ main {
 .footer-modal {
     display: flex;
     margin-top: 35px;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 10px;
     padding: 0px 10px;
     align-items: center;
+}
+.bt-options-insert-mov {
+    display: flex;
+    align-items: center;
+    border: none;
+    background-color: var(--color-grey-700);
+    border-radius: 5px;
 }
 .bt-cancel-modal {
     background-color: var(--color-red-500);
@@ -681,6 +688,49 @@ main {
 }
 
 .bt-send-alter-username {
+    background-color: var(--color-blue-500);
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    color: var(--color-blue-200);
+    font-weight: 400;
+}
+
+
+/*Dropdown options */
+.menu-options-insert-mov {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    background-color: var(--color-grey-700);
+    color: var(--color-blue-200);
+    border-radius: 5px;
+}
+
+.menu-options-mov {
+    display: none;
+    position: absolute;
+    box-sizing: border-box;
+    padding: 10px;
+    flex-direction: column;
+    top: 32px;
+    left: 0;
+    width: max-content;
+    gap: 5px;
+    border-radius: 5px;
+    background-color: var(--color-grey-700);
+    z-index: 900;
+}
+
+.menu-options-insert-mov:hover .menu-options-mov {
+    display: flex;
+}
+
+.bt-option-mov {
     background-color: var(--color-blue-500);
     border: none;
     padding: 5px;
