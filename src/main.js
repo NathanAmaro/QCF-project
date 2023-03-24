@@ -80,7 +80,7 @@ ipcMain.handle('alter-username', (event, name) => {
 
 // Ponte que consulta o saldo de abertura do mês
 ipcMain.handle('find-opening-balance', async (event, date) => {
-    
+
     try {
         const movement = await Movement.findOne({
             where: {
@@ -148,9 +148,9 @@ ipcMain.handle('delete-movement', async (event, id) => {
 
     try {
         const movement = await Movement.destroy({
-           where: {
-            id: id
-           }
+            where: {
+                id: id
+            }
         })
 
         db.query("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='movements'");
@@ -384,7 +384,7 @@ ipcMain.handle('gen-xlsx-file', async (event, reference) => {
 ipcMain.handle('gen-pdf-file', async (event, reference, totalizers) => {
 
     ipcMain.removeAllListeners(['gen-pdf-file'])
-    
+
     // Lendo o arquivo config.json e salvando em uma variável
     const rawconfig = fs.readFileSync(path.join(__dirname, '../config.json'));
     const configJSON = JSON.parse(rawconfig);
@@ -431,12 +431,12 @@ ipcMain.handle('gen-pdf-file', async (event, reference, totalizers) => {
                         value: parseFloat(totalizers.finalBalance).toFixed(2).toString().replace('.', ',')
                     }
                 }, result.filePaths)
-                .then((res) => {
-                    return 'Arquivo gerado com sucesso!'
-                })
-                .catch((err) => {
-                    throw new Error(err.message)
-                })
+                    .then((res) => {
+                        return 'Arquivo gerado com sucesso!'
+                    })
+                    .catch((err) => {
+                        throw new Error(err.message)
+                    })
             } else {
                 throw new Error('Operação cancelada')
             }
@@ -444,7 +444,7 @@ ipcMain.handle('gen-pdf-file', async (event, reference, totalizers) => {
         }).catch(err => {
             throw new Error(err.message)
         })
-        
+
     } catch (err) {
         throw new Error(err.message)
     }
