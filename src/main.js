@@ -24,7 +24,7 @@ const createWindow = () => {
     mainWindow.loadFile('src/index.html')
 
     // Removendo a menu bar
-    //mainWindow.setMenu(null)
+    mainWindow.setMenu(null)
 
     // Abrir janela maximizada
     mainWindow.maximize()
