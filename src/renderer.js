@@ -208,11 +208,17 @@ document.getElementById("type-movement-alter").addEventListener("change", functi
 })
 // Adicionando evento Change no input do valor do movimento
 document.getElementById("value-movement-alter").addEventListener("change", function (event) {
-    event.target.value = handleRoudValue(event.target.value)
+    let value = event.target.value
+    // Setando duas casas decimais no valor informado
+    event.target.value = parseFloat(value).toFixed(2)
 })
 // Adicionando evento Keydown no input do valor do movimento
 document.getElementById("value-movement-alter").addEventListener("keydown", function (event) {
-    event.target.value = handleLengthValue(event.target.value, 7)
+    let value = event.target.value
+    // Verificando se o tamanho do valor do input é maior ou igual a 8 dígitos
+    if (value.length >= 8) {
+        event.target.value = value.slice(0, 7)
+    }
 })
 
 
@@ -483,7 +489,8 @@ function handleRoudValue(value) {
  */
 function handleLengthValue(value, length) {
     if (value.length >= length) {
-        return value = value.slice(0, 8 - 1)
+        const leng = length-1
+        return value = value.slice(0, leng)
     } else {
         return value
     }
