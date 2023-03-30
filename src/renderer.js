@@ -1,11 +1,13 @@
 // Execuções iniciais ao abrir o sistema
 const initialVerif = async () => {
+    // Buscando o combobox do ano da referência
+    const selectYear = document.getElementById('select-year-reference');
 
     // Lidando com o nome do usuário
     await handleUsernamer()
 
     // Requisitando os anos para preencher na referência
-    await findReferences('years')
+    await findReferences('years', selectYear)
 }
 initialVerif()
 
@@ -16,7 +18,10 @@ initialVerif()
 
 // Adicionando evento de Click no botão de exportar movimentos em XLSX
 document.getElementById("export-movements-xlsx").addEventListener("click", async () => {
-    const ref = getSelectedRef()
+    const selectYear = document.getElementById('select-year-reference');
+    const selectMonth = document.getElementById('select-month-reference');
+
+    const ref = getSelectedRef(selectYear, selectMonth)
 
     if (ref) {
         Swal.fire({
@@ -39,7 +44,9 @@ document.getElementById("export-movements-xlsx").addEventListener("click", async
 })
 // Adicionando evento de Click no botão de exportar movimentos em PDF
 document.getElementById("export-movements-pdf").addEventListener("click", async () => {
-    const ref = getSelectedRef()
+    const selectYear = document.getElementById('select-year-reference');
+    const selectMonth = document.getElementById('select-month-reference');
+    const ref = getSelectedRef(selectYear, selectMonth)
     
     if (ref) {
         const calcValuesResp = await window.movement.calcValues(ref)
@@ -68,9 +75,11 @@ document.getElementById("export-movements-pdf").addEventListener("click", async 
 })
 // Adicionando evento de Click no botão de buscar movimentos
 document.getElementById("button-search-movements").addEventListener("click", async () => {
+    const selectYear = document.getElementById('select-year-reference');
+    const selectMonth = document.getElementById('select-month-reference');
     const titRefTotalizers = document.getElementById('title-reference-totalizers');
 
-    const ref = getSelectedRef()
+    const ref = getSelectedRef(selectYear, selectMonth)
 
     if (!ref) { // Se a referência não estiver selecionada
         titRefTotalizers.innerHTML = ''
@@ -85,8 +94,8 @@ document.getElementById("button-search-movements").addEventListener("click", asy
 })
 // Adicionando evento de Click no botão de inserir novo movimento
 document.getElementById("bt-new-register").addEventListener("click", () => {
-    let dateMovementField = document.getElementById("date-movement")
-    let now = moment().format("YYYY-MM-DD") // Capturando a data atual e mudando o formato
+    const dateMovementField = document.getElementById("date-movement")
+    const now = moment().format("YYYY-MM-DD") // Capturando a data atual e mudando o formato
 
     // Mudando o valor do campo Data para a data atual
     dateMovementField.value = now
@@ -100,15 +109,21 @@ document.getElementById('select-year-reference').addEventListener("change", asyn
     const value = e.target.value
 
     if (value != '') {
-        resetRef('month')
-        await findReferences('months', value)
+        resetRef('month', '', selectMonth)
+        await findReferences('months', selectMonth, value)
         selectMonth.disabled = false
     }
 })
 // Adicionando evento de Click no botão de pesquisar referências
 document.getElementById('bt-refind-references').addEventListener("click", async () => {
-    resetRef('all')
-    await findReferences('years')
+    // Buscando o combobox do ano da referência
+    const selectYear = document.getElementById('select-year-reference');
+    // Buscando o combobox do mês da referência
+    const selectMonth = document.getElementById('select-month-reference');
+
+    resetRef('all', selectYear, selectMonth)
+
+    await findReferences('years', selectYear)
 })
 // Adicionando evento de Click no botão de alterar nome do usuário
 document.getElementById('bt-send-alter-username').addEventListener("click", async () => {
@@ -132,12 +147,14 @@ document.getElementById('bt-send-alter-username').addEventListener("click", asyn
 document.getElementById("bt-close-modal-insert").addEventListener("click", () => showModalInsert(false))
 // Adicionando evento de Click no botão de cancelar modal de inserir movimento
 document.getElementById("bt-cancel-modal-insert").addEventListener("click", () => showModalInsert(false))
+// Adicionando evento de Click no botão de copiar saldo de referência selecionada
+document.getElementById("bt-copy-final-balance").addEventListener("click", () => showModalReference(true))
 // Adicionando evento de submit no formulário
 document.getElementById("form-modal").addEventListener("submit", (e) => formHandleInsert(e))
 // Adicionando evento Click no checkbox do Saldo Inicial
 document.getElementById("opening-balance").addEventListener("change", function (event) {
-    let typeMovement = document.getElementById("type-movement")
-    let switchTypeValueMovement = document.getElementById("switch-type-value-movement")
+    const typeMovement = document.getElementById("type-movement")
+    const switchTypeValueMovement = document.getElementById("switch-type-value-movement")
 
     handleOpeningBalanceChange(event.target.checked, typeMovement, switchTypeValueMovement)
 })
@@ -196,6 +213,53 @@ document.getElementById("value-movement-alter").addEventListener("change", funct
 // Adicionando evento Keydown no input do valor do movimento
 document.getElementById("value-movement-alter").addEventListener("keydown", function (event) {
     event.target.value = handleLengthValue(event.target.value, 7)
+})
+
+
+
+
+/* Reference modal elements */
+
+// Adicionando evento de Click no botão de fechar modal de selecionar referência
+document.getElementById("bt-close-modal-reference").addEventListener("click", () => {
+    const selectYear = document.getElementById('select-year-modal-reference');
+    const selectMonth = document.getElementById('select-month-modal-reference');
+
+    showModalReference(false)
+
+    resetRef('all', selectYear, selectMonth)
+})
+// Adicionando evento de Click no botão de cancelar modal de selecionar referência
+document.getElementById("bt-cancel-modal-reference").addEventListener("click", () => {
+    const selectYear = document.getElementById('select-year-modal-reference');
+    const selectMonth = document.getElementById('select-month-modal-reference');
+
+    showModalReference(false)
+
+    resetRef('all', selectYear, selectMonth)
+})
+// Adicionando evento de Change no select de ano da referência
+document.getElementById('select-year-modal-reference').addEventListener("change", async (e) => {
+    const selectMonth = document.getElementById('select-month-modal-reference');
+    const value = e.target.value
+
+    if (value != '') {
+        resetRef('month', '', selectMonth)
+        await findReferences('months', selectMonth, value)
+        selectMonth.disabled = false
+    }
+})
+// Adicionando evento de Click no botão de cancelar modal de selecionar referência
+document.getElementById("bt-submit-modal-reference").addEventListener("click", async () => {
+    const selectYear = document.getElementById('select-year-modal-reference');
+    const selectMonth = document.getElementById('select-month-modal-reference');
+
+    // Capturando a informação da referência selecionada
+    const reference = getSelectedRef(selectYear, selectMonth)
+    // Consultando no banco de dados os valores referentes a referência selecionada
+    const calcValuesResp = await window.movement.calcValues(reference)
+    // Enviando as informações para a função que lida com a cópia de saldo final
+    handleCopyFinalBalance(calcValuesResp, reference)
 })
 
 
@@ -638,11 +702,10 @@ async function genMovsTable(reference) {
 /**
  * @description Função que lida com a busca das referências no banco de dados e preenche os combobox
  * @param {string} type Opções: 'years'; 'months' 
+ * @param {element} elem Parâmetro que recebe o combobox a ser preenchido com as informações coletadas a partir do parâmetro type
  * @param {string} year Parâmetro que recebe o ano da referencia
 */
-async function findReferences(type, year) {
-    const selectYear = document.getElementById('select-year-reference');
-    const selectMonth = document.getElementById('select-month-reference');
+async function findReferences(type, elem, year) {
 
     showLoading(true)
 
@@ -654,7 +717,7 @@ async function findReferences(type, year) {
             // Criando a nova option
             let newOption = new Option(year, year);
             // Enviando a nova option para o select
-            selectYear.add(newOption, undefined);
+            elem.add(newOption, undefined);
         })
     } else if (type === 'months') {
         // Consultando a ponte
@@ -669,7 +732,7 @@ async function findReferences(type, year) {
             // Criando a nova option
             let newOption = new Option(upperFirstLetterMonth, parseInt(month));
             // Enviando a nova option para o select
-            selectMonth.add(newOption, undefined);
+            elem.add(newOption, undefined);
         })
     }
     showLoading(false)
@@ -706,6 +769,60 @@ async function handleUsernamer() {
             const usernameElement = document.getElementById('username-element')
             usernameElement.innerText = resp.username
         })
+}
+/**
+ * @description Função que lida com a cópia do saldo final de uma referência
+ * @param {number} value Valor que será informado no movimento
+ * @param {object} reference Objeto que contém a referência selecionada
+ */
+function handleCopyFinalBalance(value, reference) {
+    // Capturando os elementos da tela de inserir movimento
+    const opBalance = document.getElementById('opening-balance')
+    const typeMovement = document.getElementById("type-movement")
+    const switchTypeValueMovement = document.getElementById("switch-type-value-movement")
+    const dateMovementField = document.getElementById("date-movement")
+    const originMovementField = document.getElementById('origin-movement')
+    const switchMovementField = document.getElementById('type-value-movement')
+    const valueMovementField = document.getElementById('value-movement')
+    const descMovementField = document.getElementById('description-movement')
+    // Capturando os elementos da referência
+    const selectYear = document.getElementById('select-year-modal-reference');
+    const selectMonth = document.getElementById('select-month-modal-reference');
+
+    // Setando o checkbox como true
+    opBalance.checked = true
+    // Lidando com a inabilitação dos campos quando o checkbox for alterado
+    handleOpeningBalanceChange(true, typeMovement, switchTypeValueMovement)
+
+    // Capturando somente o ano e mês atual
+    const dateNow = moment().format("YYYY-MM-DD").slice(0, 7)
+    // Adicionando o dia 01 no ano e mês atual e setando no campo de data
+    dateMovementField.value = `${dateNow}-01`
+
+    // Convertendo o mês selecionado na referência para Fev
+    const convertMonth = moment(`01/${reference.month}/2023`, 'DD/MM/YYYY').locale('pt-br').format('MMM')
+    // Setando a informação no campo Origem da tela de inserir movimento
+    originMovementField.value = `${convertMonth[0].toUpperCase()}${convertMonth.slice(1)}/${reference.year}`
+
+
+    // Verificando se o valor final da referência é Despesa ou Receita
+    if (value.finalBalance > 0) {
+        switchMovementField.checked = false
+    } else {
+        switchMovementField.checked = true
+    }
+    // Setando o valor final no campo Valor da tela de inserir movimento
+    valueMovementField.value = handleRoudValue(handleLengthValue(Math.abs(value.finalBalance), 7))
+
+
+    // Setando uma descrição padrão no movimento
+    descMovementField.value = 'Lançamento de saldo inicial'
+
+    // Fechando o modal de selecionar a referência
+    showModalReference(false)
+
+    // Resetando a referência selecionada
+    resetRef('all', selectYear, selectMonth)
 }
 
 
@@ -758,6 +875,27 @@ function showModalInsert(param) {
 
 }
 /**
+ * @description Função que abre ou fecha o modal de selecionar referência
+ * @param {boolean} param Esperado: true, false
+ */
+async function showModalReference(param) {
+    // Buscando o modal de selecionar referência
+    const modal = document.getElementById("overlay-modal-reference");
+    // Buscando o combobox do ano da referência
+    const selectYear = document.getElementById('select-year-modal-reference');
+
+    if (param) {
+        // Preenchendo o combobox de anos da referência
+        await findReferences('years', selectYear)
+        // Depois de preencher o combobox, mostrar o modal
+        modal.style.display = "flex"
+    } else if (!param) {
+        // Fechando o modal
+        modal.style.display = "none";
+    }
+
+}
+/**
  * @description Função que abre ou fecha o modal de alterar movimento
  * @param {boolean} param Esperado: true, false
  */
@@ -777,21 +915,21 @@ function showModalAlter(param) {
 }
 /**
  * @description Função que lida com a captura das informações da referência selecionada
+ * @param {element} elemYear Combobox que contém o ano da referência
+ * @param {element} elemMonth Combobox que contém o mês da referência
  * @returns {object} Retorna um objeto contendo o ano e o mês da referência selecionada
  */
-function getSelectedRef() {
-    const selectYear = document.getElementById('select-year-reference');
-    const selectMonth = document.getElementById('select-month-reference');
+function getSelectedRef(elemYear, elemMonth) {
 
-    if (!selectYear.value) {
+    if (!elemYear.value) {
         Swal.fire({ title: "Erro", text: 'É obrigatório selecionar o Ano da referência', icon: 'error', allowOutsideClick: false })
-    } else if (!selectMonth.value) {
+    } else if (!elemMonth.value) {
         Swal.fire({ title: "Erro", text: 'É obrigatório selecionar o Mês da referência', icon: 'error', allowOutsideClick: false })
     }
 
     const ref = {
-        year: selectYear.value,
-        month: selectMonth.value
+        year: elemYear.value,
+        month: elemMonth.value
     }
     if (ref.year || ref.month) {
         return ref
@@ -801,33 +939,33 @@ function getSelectedRef() {
 /**
  * @description Função que reseta os campos da referência
  * @param {string} type Opções: 'year'; 'month'; 'all'
+ * @param {element} elemYear Combobox que será resetado caso as opções de type sejam 'year' ou 'all'
+ * @param {element} elemMonth Combobox que será resetado caso as opções de type sejam 'month' ou 'all'
 */
-function resetRef(type) {
-    const selectYear = document.getElementById('select-year-reference');
-    const selectMonth = document.getElementById('select-month-reference');
+function resetRef(type, elemYear, elemMonth) {
 
     switch (type) {
         case 'year':
             // Voltando o combobox ao valor padrão
-            selectYear.value = ''
+            elemYear.value = ''
             // Limpando as options do combobox
-            removeOptions('select-year-reference')
+            removeOptions(elemYear.id)
             break;
         case 'month':
             // Voltando o combobox ao valor padrão
-            selectMonth.value = ''
+            elemMonth.value = ''
             // Limpando as options do combobox
-            removeOptions('select-month-reference')
+            removeOptions(elemMonth.id)
             break;
         case 'all':
             // Voltando o combobox ao valor padrão
-            selectYear.value = ''
-            selectMonth.value = ''
+            elemYear.value = ''
+            elemMonth.value = ''
             // Limpando as options do combobox
-            removeOptions('select-year-reference')
-            removeOptions('select-month-reference')
+            removeOptions(elemYear.id)
+            removeOptions(elemMonth.id)
             // Desabilitando o combobox do mês da referência
-            selectMonth.disabled = true
+            elemMonth.disabled = true
             break;
     }
 }

@@ -13,12 +13,11 @@
 <body id="body">
     <div class="user-name-float">
         <div class="container-alter-username">
-            <img src="../build/user-bold-blue-200.svg" width="22" height="22"
-                alt="Icon user name" />
+            <img src="../build/user-bold-blue-200.svg" width="22" height="22" alt="Icon user name" />
             <span id="username-element" class="username-element">Nome do usuário</span>
         </div>
         <div class="menu-username" id="menu-username">
-            <input type="text" id="input-username" class="input-username" placeholder="Nome"/>
+            <input type="text" id="input-username" class="input-username" placeholder="Nome" />
             <button id="bt-send-alter-username" class="bt-send-alter-username">
                 Alterar
             </button>
@@ -36,12 +35,14 @@
                     <select class="combobox-reference" style="width: 155px;" disabled id="select-month-reference">
                         <option value="" selected disabled hidden>Mês</option>
                     </select>
-                    <button class="bt-refind-references" id="bt-refind-references" title="Pesquisar referências" type="button">
+                    <button class="bt-refind-references" id="bt-refind-references" title="Pesquisar referências"
+                        type="button">
                         <img src="../build/arrows-clockwise-fill-blue-200.svg" width="20" height="20"
                             alt="Icon button refind reference" />
                     </button>
                 </div>
-                <button class="button-search-movements" title="Pesquisar movimentos" id="button-search-movements" type="button">
+                <button class="button-search-movements" title="Pesquisar movimentos" id="button-search-movements"
+                    type="button">
                     <img src="../build/magnifying-glass-bold-blue-200.svg" width="24" height="24"
                         alt="Icon button search reference" />
                 </button>
@@ -119,7 +120,8 @@
                                 Tipos de lançamentos com valor positivo
                             </div>
                         </div>
-                        <div class="table-footer-td" id="table-footer-td">R$<span id="final-balance-table">0,00</span></div>
+                        <div class="table-footer-td" id="table-footer-td">R$<span id="final-balance-table">0,00</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -129,15 +131,15 @@
     <!-- Definindo o modal de inserir novo movimento -->
     <div class="overlay-modal" id="overlay-modal-insert">
         <div class="container-modal">
-            <button id="bt-close-modal-insert" class="bt-close-modal" type="button"><img src="../build/x-bold-blue-200.svg"
-                    alt="Image button close modal"></button>
+            <button id="bt-close-modal-insert" class="bt-close-modal" type="button"><img
+                    src="../build/x-bold-blue-200.svg" alt="Image button close modal"></button>
             <div class="header-modal">
                 <h2 class="title-modal">Inserir movimento</h2>
             </div>
             <form class="form-modal" id="form-modal" action="" method="POST">
                 <div class="main-modal-row">
                     <div class="container-opening-balance">
-                        <input type="checkbox" id="opening-balance" class="input-opening-balance"/>
+                        <input type="checkbox" id="opening-balance" class="input-opening-balance" />
                         <label for="opening-balance">Saldo inicial</label>
                     </div>
                     <div class="container-input-modal">
@@ -150,11 +152,11 @@
                     </div>
                     <div class="container-input-modal">
                         <h6 class="title-input-modal">Data</h6>
-                        <input type="date" class="input-date-modal" id="date-movement"/>
+                        <input type="date" class="input-date-modal" id="date-movement" />
                     </div>
                     <div class="container-input-modal">
                         <h6 class="title-input-modal">Origem</h6>
-                        <input type="text" class="input-origin-modal" placeholder="Origem" id="origin-movement"/>
+                        <input type="text" class="input-origin-modal" placeholder="Origem" id="origin-movement" />
                     </div>
                     <div class="container-input-modal">
                         <div style="display: flex; justify-content: space-between;">
@@ -166,7 +168,8 @@
                         </div>
                         <div class="container-input-value-movement">
                             R$
-                            <input type="number" class="input-value-modal" placeholder="0,00" id="value-movement" step="any" maxlength="10"/>
+                            <input type="number" class="input-value-modal" placeholder="0,00" id="value-movement"
+                                step="any" maxlength="10" />
                         </div>
                     </div>
                 </div>
@@ -177,7 +180,7 @@
                     </div>
                 </div>
                 <div class="footer-modal">
-                    
+
                     <div class="menu-options-insert-mov">
                         <img src="../build/dots-three-outline-fill-blue-200.svg" width="22" height="22"
                             alt="Image button close modal">
@@ -185,15 +188,10 @@
                             <button id="bt-copy-final-balance" class="bt-option-mov" type="button">
                                 Copiar saldo final
                             </button>
-                        <!--  
-                            <button id="bt-copy-existing" class="bt-option-mov" type="button">
-                                Copiar existente
-                            </button>
-                        -->
                         </div>
-                         
+
                     </div>
-                   
+
                     <div style="display: flex; justify-content: center; gap: 10px;">
                         <button type="button" id="bt-cancel-modal-insert" class="bt-cancel-modal">Cancelar</button>
                         <button type="submit" id="bt-submit-modal-insert" class="bt-submit-modal">Salvar</button>
@@ -206,8 +204,8 @@
     <!-- Definindo o modal de alterar movimento -->
     <div class="overlay-modal" id="overlay-modal-alter">
         <div class="container-modal">
-            <button id="bt-close-modal-alter" class="bt-close-modal" type="button"><img src="../build/x-bold-blue-200.svg"
-                    alt="Image button close modal"></button>
+            <button id="bt-close-modal-alter" class="bt-close-modal" type="button"><img
+                    src="../build/x-bold-blue-200.svg" alt="Image button close modal"></button>
             <div class="header-modal">
                 <h2 class="title-modal">Alterar movimento</h2>
             </div>
@@ -220,7 +218,7 @@
                 </div>
                 <div class="main-modal-row">
                     <div class="container-opening-balance">
-                        <input type="checkbox" id="opening-balance-alter" class="input-opening-balance"/>
+                        <input type="checkbox" id="opening-balance-alter" class="input-opening-balance" />
                         <label for="opening-balance">Saldo inicial</label>
                     </div>
                     <div class="container-input-modal">
@@ -233,11 +231,11 @@
                     </div>
                     <div class="container-input-modal">
                         <h6 class="title-input-modal">Data</h6>
-                        <input type="date" class="input-date-modal" id="date-movement-alter"/>
+                        <input type="date" class="input-date-modal" id="date-movement-alter" />
                     </div>
                     <div class="container-input-modal">
                         <h6 class="title-input-modal">Origem</h6>
-                        <input type="text" class="input-origin-modal" placeholder="Origem" id="origin-movement-alter"/>
+                        <input type="text" class="input-origin-modal" placeholder="Origem" id="origin-movement-alter" />
                     </div>
                     <div class="container-input-modal">
                         <div style="display: flex; justify-content: space-between;">
@@ -249,26 +247,49 @@
                         </div>
                         <div class="container-input-value-movement">
                             R$
-                            <input type="number" class="input-value-modal" placeholder="0,00" id="value-movement-alter" step="any" maxlength="10"/>
+                            <input type="number" class="input-value-modal" placeholder="0,00" id="value-movement-alter"
+                                step="any" maxlength="10" />
                         </div>
                     </div>
                 </div>
                 <div class="main-modal-row">
                     <div class="container-textarea-modal">
                         <h6 class="title-input-modal">Descrição</h6>
-                        <textarea class="textarea-modal" placeholder="Descrição" id="description-movement-alter"></textarea>
+                        <textarea class="textarea-modal" placeholder="Descrição"
+                            id="description-movement-alter"></textarea>
                     </div>
                 </div>
                 <div class="footer-modal">
                     <button type="button" id="bt-cancel-modal-alter" class="bt-cancel-modal">Cancelar</button>
-                    <button type="submit" id="bt-submit-modal-alter" class="bt-submit-modal">Salvar</button>
+                    <button type="button" id="bt-submit-modal-alter" class="bt-submit-modal">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Definindo o modal de selecionar referência ao copiar saldo final -->
-    <div class="overlay-modal-reference" id="overlay-modal-reference">
+    <div class="overlay-modal" id="overlay-modal-reference">
+        <div class="container-modal">
+            <button id="bt-close-modal-reference" class="bt-close-modal" type="button"><img
+                    src="../build/x-bold-blue-200.svg" alt="Image button close modal"></button>
+            <div class="header-modal">
+                <h2 class="title-modal">Selecionar referência</h2>
+            </div>
+            <div class="container-content-modal-reference">
+                <div class="container-combobox-reference">
+                    <select class="combobox-reference" style="width: 105px;" id="select-year-modal-reference">
+                        <option value="" selected disabled hidden>Ano</option>
+                    </select>
+                    <select class="combobox-reference" style="width: 155px;" disabled id="select-month-modal-reference">
+                        <option value="" selected disabled hidden>Mês</option>
+                    </select>
+                </div>
+            </div>
+            <div class="footer-modal-reference">
+                <button type="button" id="bt-cancel-modal-reference" class="bt-cancel-modal">Cancelar</button>
+                <button type="submit" id="bt-submit-modal-reference" class="bt-submit-modal">Copiar</button>
+            </div>
+        </div>
     </div>
 
     <!-- Definindo o loading -->

@@ -400,6 +400,12 @@ main {
     align-items: center;
     background-color: rgba(0, 0, 0, 0.80);
 }
+.container-content-modal-reference {
+    margin: 10px 30px 20px 30px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--color-grey-700);
+}
 .overlay-loading {
     position: absolute;
     margin: 0;
@@ -569,6 +575,13 @@ main {
     justify-content: space-between;
     gap: 10px;
     padding: 0px 10px;
+    align-items: center;
+}
+.footer-modal-reference {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 10px 10px;
     align-items: center;
 }
 .bt-options-insert-mov {
