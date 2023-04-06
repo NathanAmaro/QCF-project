@@ -16,10 +16,22 @@ Este projeto foi pensado para resolver um problema pontual. Uma planilha em Exce
 - [x] Exportação dos movimentos para PDF
 - [x] Exportação dos movimentos para XLSX
 
-### Capturas
+### Capturas de tela
 
 * Tela inicial
 
 <h1 align="center">
-  <img alt="Tela inicial" title="#TelaInicial" src="./screenshots/captura1.png" />
+  <img alt="Home" title="#Home" src="./screenshots/Captura1.png" />
+</h1>
+
+* Cadastro de movimento
+
+<h1 align="center">
+  <img alt="Insert" title="#Insert" src="./screenshots/Captura2.png" />
+</h1>
+
+* Exportações
+
+<h1 align="center">
+  <img alt="Exports" title="#Exports" src="./screenshots/Captura3.png" />
 </h1>
