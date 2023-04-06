@@ -4,19 +4,19 @@
 
 <p align="center">Aplicação simples para controle financeiro</p>
 
-### Motivação
+### :bulb: Motivação
 
 Este projeto foi pensado para resolver um problema pontual. Uma planilha em Excel mensal era necessária para que eu demonstrasse todas minhas despesas e receitas dentro do mês, mas, não existia um padrão para os dados. Depois que o padrão dos dados foi estabelecido surgiu um outro problema, a licença do Microsoft Office estava para expirar e nem todos do meu ambiente profissional possuíam um editor de planilhas. Juntando a necessidade de possuir algo que padronizasse os lançamentos com a minha vontade de desenvolver uma aplicação instalável e leve, surgiu então a ideia de desenvolver um aplicativo em ElectronJS para praticar e me familiarizar com esta ferramenta.
 
 
-### Características
+### :white_check_mark: Características
 
 - [x] Cadastro de movimentações do tipo **Despesa** ou **Receita**
 - [x] Fácil visualização em tabela das movimentações por **referência selecionada**
 - [x] Exportação dos movimentos para PDF
 - [x] Exportação dos movimentos para XLSX
 
-### Capturas de tela
+### :camera: Capturas de tela
 
 * Tela inicial
 
@@ -35,3 +35,12 @@ Este projeto foi pensado para resolver um problema pontual. Uma planilha em Exce
 <h1 align="center">
   <img alt="Exports" title="#Exports" src="./screenshots/Captura3.png" />
 </h1>
+
+### :wrench: Tecnologias
+
+A seguir, algumas das ferramentas que foram usadas na construção do projeto:
+
+- [Node.js](https://nodejs.org/en/) v18.12.0
+- [Electron.js](https://www.electronjs.org/)
+- [Sequelize](https://sequelize.org/)
+- [SQLite3](https://www.npmjs.com/package/sqlite3/)
