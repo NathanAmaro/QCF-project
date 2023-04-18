@@ -53,7 +53,7 @@ const syncDB = async () => {
     const database = db;
 
     try {
-        const resultado = await database.sync();
+        const resultado = await database.sync({ alter: true });
     } catch (error) {
         throw new Error(error.message)
     }
@@ -121,6 +121,7 @@ ipcMain.handle('create-movement', async (event, formData) => {
             origin: formData.origin,
             value: formData.value,
             description: formData.description,
+            favoriteDescription: formData.favoriteDescription,
         })
         return movement
     } catch (err) {

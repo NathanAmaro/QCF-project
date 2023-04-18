@@ -291,6 +291,7 @@ async function formHandleInsert(event) {
         value: form.elements['value-movement'].value,
         typeValue: form.elements['type-value-movement'].checked,
         description: form.elements['description-movement'].value,
+        favoriteDescription: form.elements['favorite-description'].checked,
     }
 
     await formValidate(formData)

@@ -28,6 +28,11 @@ const Movement = database.define('movement', {
         type: Sequelize.STRING,
         allowNull: false
     },
+    favoriteDescription: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    },
     value: {
         type: Sequelize.DOUBLE,
         allowNull: false

@@ -161,6 +161,18 @@ main {
     height: min-content;
     gap: 10px;
 }
+.container-title-description {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.container-fav-description {
+    font-size: 12px;
+    color: var(--color-blue-200);
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
 .container-totalizers {
     display: flex;
     gap: 18px;
