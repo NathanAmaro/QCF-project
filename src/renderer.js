@@ -149,6 +149,8 @@ document.getElementById("bt-close-modal-insert").addEventListener("click", () =>
 document.getElementById("bt-cancel-modal-insert").addEventListener("click", () => showModalInsert(false))
 // Adicionando evento de Click no botão de copiar saldo de referência selecionada
 document.getElementById("bt-copy-final-balance").addEventListener("click", () => showModalReference(true))
+// Adicionando evento de Click no botão de localizar descrição favoritada
+document.getElementById("bt-get-description").addEventListener("click", () => showModalGetDescription(true, 'description-movement'))
 // Adicionando evento de submit no formulário
 document.getElementById("form-modal").addEventListener("submit", (e) => formHandleInsert(e))
 // Adicionando evento Click no checkbox do Saldo Inicial
@@ -269,6 +271,23 @@ document.getElementById("bt-submit-modal-reference").addEventListener("click", a
 })
 
 
+
+
+/* Get description modal elements */
+
+// Adicionando evento de Click no botão de fechar modal de buscar descrição
+document.getElementById("bt-close-modal-getdescription").addEventListener("click", () => showModalGetDescription(false))
+// Adicionando evento de Click no botão de cancelar modal de buscar descrição
+document.getElementById("bt-cancel-modal-getdescription").addEventListener("click", () => showModalGetDescription(false))
+// Adicionando evento de Click no botão de filtrar descrição no modal de buscar descrição
+document.getElementById("bt-filter-description").addEventListener("click", () => {
+    const inputFilter = document.getElementById('search-description')
+    genFavoriteDescriptions(inputFilter.value)
+})
+// Adicionando evento de Click no botão de cancelar modal de buscar descrição
+document.getElementById("bt-submit-modal-getdescription").addEventListener("click", () => handleGetFavoriteDescription())
+// Variável responsável por guardar o ID do elemento que receberá a descrição favoritada
+var idElemFavoriteDescription = ''
 
 
 /* Form submit functions */
@@ -708,6 +727,36 @@ async function genMovsTable(reference) {
         })
 }
 /**
+ * @description Função que lida com o preenchimento da tabela de descrições favoritas
+ * @param {string} filter Parâmetro que recebe o filtro a ser considerado ao localizar as descrições
+ */
+async function genFavoriteDescriptions(filter) {
+    const table = document.getElementById('table-descriptions')
+    table.innerHTML = ''
+    const descriptions = await window.movement.findDescriptions(filter)
+    if (descriptions) {
+        descriptions.map((description) => {
+            const row = table.insertRow();
+            row.classList.add('tr-search-description')
+            row.addEventListener('click', (event) => {
+                const rowParent = event.target.parentNode
+                if (!rowParent.classList.contains('tr-search-description-selected')) {
+                    cleanClass('tr-search-description-selected')
+                    rowParent.classList.add('tr-search-description-selected')
+                } else {
+                    rowParent.classList.remove('tr-search-description-selected')
+                }
+                
+            })
+            // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+            const cell = row.insertCell();
+            cell.classList.add('td-search-description')
+            // Add some text to the new cells:
+            cell.innerHTML = description;
+        })
+    }
+}
+/**
  * @description Função que lida com a busca das referências no banco de dados e preenche os combobox
  * @param {string} type Opções: 'years'; 'months' 
  * @param {element} elem Parâmetro que recebe o combobox a ser preenchido com as informações coletadas a partir do parâmetro type
@@ -832,6 +881,21 @@ function handleCopyFinalBalance(value, reference) {
     // Resetando a referência selecionada
     resetRef('all', selectYear, selectMonth)
 }
+/**
+ * @description Função que lida com a cópia de uma descrição favoritada
+ */
+function handleGetFavoriteDescription() {
+    const lineSelected = document.querySelectorAll('.tr-search-description-selected')
+    const elementText = document.getElementById(idElemFavoriteDescription)
+    if (lineSelected.length === 1) {
+        const description = lineSelected[0].childNodes[0].innerHTML
+        elementText.innerHTML = description
+        showModalGetDescription(false)
+    } else {
+        Swal.fire({ title: "Erro", text: 'Selecione alguma informação para continuar.', icon: 'error', allowOutsideClick: false })
+    }
+
+}
 
 
 
@@ -902,6 +966,29 @@ async function showModalReference(param) {
         modal.style.display = "none";
     }
 
+}
+/**
+ * @description Função que abre ou fecha o modal de buscar descrição
+ * @param {boolean} show Esperado: true, false
+ * @param {string} elemID Esperado: ID do elemento que receberá o texto da descrição selecionada
+ */
+ async function showModalGetDescription(show, elemID) {
+    // Buscando o modal de buscar descrição
+    const modal = document.getElementById("overlay-modal-getdescription");
+    const element = document.getElementById(elemID);
+    const inputSearch = document.getElementById('search-description');
+
+    if (show && element) {
+        genFavoriteDescriptions()
+        idElemFavoriteDescription = elemID
+        // Depois de preencher o combobox, mostrar o modal
+        modal.style.display = "flex"
+    } else if (!show) {
+        inputSearch.value = ''
+        idElemFavoriteDescription = ''
+        // Fechando o modal
+        modal.style.display = "none";
+    }
 }
 /**
  * @description Função que abre ou fecha o modal de alterar movimento
@@ -976,4 +1063,15 @@ function resetRef(type, elemYear, elemMonth) {
             elemMonth.disabled = true
             break;
     }
+}
+/**
+ * @description Função que limpa classe de todos elementos que a possui
+ * @param {string} className Nome da classe que será limpa
+*/
+function cleanClass(className) {
+    const elements = document.querySelectorAll(`.${className}`)
+    elements.forEach((element) => {
+        element.classList.remove(className)
+    })
+    
 }

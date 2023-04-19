@@ -144,6 +144,30 @@ ipcMain.handle('find-movement', async (event, idMov) => {
     }
 })
 
+// Ponte que busca informações de um movimento por seu ID
+ipcMain.handle('find-favorite-descriptions', async (event, filter) => {
+    try {
+        const movements = await Movement.findAll({
+            attributes: ['description'],
+            group: 'description',
+            where: {
+                description: {
+                    [sequelize.Op.like]: filter ? `%${filter}%` : '%%'
+                },
+                favoriteDescription: true
+            }
+        })
+        let descriptions = []
+        // Percorrendo os elementos da consulta
+        movements.map((element) => {
+            descriptions.push(element.dataValues.description)
+        })
+        return descriptions
+    } catch (err) {
+        throw new Error(err.message)
+    }
+})
+
 // Criando a ponte create-movement
 ipcMain.handle('delete-movement', async (event, id) => {
 

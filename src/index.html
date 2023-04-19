@@ -182,7 +182,14 @@
                                 <label for="favorite-description">Favoritar descrição</label>
                             </div>
                         </div>
-                        <textarea class="textarea-modal" placeholder="Descrição" id="description-movement"></textarea>
+                        <div class="container-description-area">
+                            <textarea class="textarea-modal" placeholder="Descrição" id="description-movement"></textarea>
+                            <button class="bt-get-description" id="bt-get-description" title="Localizar descrição"
+                                type="button">
+                                <img src="../build/magnifying-glass-bold-blue-200.svg" width="15" height="15"
+                                    alt="Icon button get description" />
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="footer-modal">
@@ -294,6 +301,36 @@
             <div class="footer-modal-reference">
                 <button type="button" id="bt-cancel-modal-reference" class="bt-cancel-modal">Cancelar</button>
                 <button type="button" id="bt-submit-modal-reference" class="bt-submit-modal">Copiar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Definindo o modal de buscar descrição -->
+    <div class="overlay-modal" id="overlay-modal-getdescription">
+        <div class="container-modal">
+            <button id="bt-close-modal-getdescription" class="bt-close-modal" type="button"><img
+                    src="../build/x-bold-blue-200.svg" alt="Image button close modal">
+            </button>
+            <div class="header-modal">
+                <h2 class="title-modal">Buscar descrição</h2>
+            </div>
+            <div class="container-content-modal-getdescription">
+                <div class="container-input-search-description">
+                    <input type="text" class="input-search-modal-getdescription" placeholder="Filtrar descrição" id="search-description" />
+                    <button class="bt-get-description" id="bt-filter-description" title="Filtrar descrição"
+                        type="button">
+                        <img src="../build/magnifying-glass-bold-blue-200.svg" width="15" height="15"
+                            alt="Icon button get description" />
+                    </button>
+                </div>
+                <div class="container-table-descriptions">
+                    <table class="table-search-description" id="table-descriptions">
+                    </table>
+                </div>
+            </div>
+            <div class="footer-modal-reference">
+                <button type="button" id="bt-cancel-modal-getdescription" class="bt-cancel-modal">Cancelar</button>
+                <button type="button" id="bt-submit-modal-getdescription" class="bt-submit-modal">Copiar</button>
             </div>
         </div>
     </div>

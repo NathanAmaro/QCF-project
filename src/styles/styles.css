@@ -294,6 +294,25 @@ main {
 .table-body .table-tr:nth-child(odd) {
     background-color: var(--color-grey-700);
 }
+.tr-search-description {
+    cursor: pointer;
+}
+.table-search-description .tr-search-description:nth-child(odd) {
+    background-color: var(--color-grey-700);
+}
+.table-search-description .tr-search-description:nth-child(odd):hover {
+    background-color: var(--color-blue-500);
+}
+.td-search-description {
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 100;
+    color: var(--color-blue-200);
+    padding: 5px;
+}
+.tr-search-description-selected {
+    background-color: var(--color-blue-100) !important;
+}
 .table-tr {
     display: flex;
     height: min-content;
@@ -418,6 +437,15 @@ main {
     border-radius: 5px;
     background-color: var(--color-grey-700);
 }
+.container-content-modal-getdescription {
+    margin: 10px 30px 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: var(--color-grey-700);
+}
 .overlay-loading {
     position: absolute;
     margin: 0;
@@ -504,6 +532,27 @@ main {
     width: min-content;
     background-color: var(--color-grey-700);
 }
+.container-input-search-description {
+    display: flex;
+    gap: 5px;
+    border-radius: 5px;
+    width: min-content;
+}
+.container-table-descriptions {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-grey-800);
+    height: 200px;
+    gap: 10px;
+    overflow: auto;
+    border-radius: 5px;
+}
+.tr-search-description {
+    border-radius: 5px;
+}
+.tr-search-description:hover {
+    background-color: var(--color-blue-500);
+}
 .title-input-modal {
     margin: 0;
     font-size: 14px;
@@ -541,6 +590,16 @@ main {
     color: var(--color-blue-200);
     border-radius: 5px;
 }
+.input-search-modal-getdescription {
+    width: 400px;
+    font-size: 12px;
+    border: none;
+    font-weight: 200;
+    padding: 5px 10px;
+    background-color: var(--color-grey-800);
+    color: var(--color-blue-200);
+    border-radius: 5px;
+}
 .container-input-value-movement{
     display: flex;
     justify-content: center;
@@ -563,6 +622,18 @@ main {
     font-size: 12px;
     font-weight: 200;
 }
+.container-description-area {
+    display: flex;
+    width: 100%;
+    gap: 5px;
+}
+.bt-get-description {
+    height: min-content;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--color-blue-500);
+    padding: 5px;
+}
 .container-textarea-modal {
     display: flex;
     flex-direction: column;
@@ -576,6 +647,7 @@ main {
     resize: none;
     border: none;
     border-radius: 5px;
+    width: 100%;
     color: var(--color-blue-200);
     padding: 5px 10px;
     font-size: 12px;
