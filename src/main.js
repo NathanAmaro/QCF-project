@@ -51,9 +51,18 @@ app.on('window-all-closed', () => {
 // Sincronizando a database
 const syncDB = async () => {
     const database = db;
+    const SyncDBVersion = 2
+    var rawconfig = fs.readFileSync(path.join(__dirname, '../config.json'));
+    var configJSON = JSON.parse(rawconfig);
 
     try {
-        const resultado = await database.sync({ alter: true });
+        if (configJSON.syncDB === SyncDBVersion) {
+            await database.sync();
+        } else {
+            await database.sync({ alter: true });
+            const data = { ...configJSON, ...{syncDB: SyncDBVersion} }
+            fs.writeFileSync(path.join(__dirname, '../config.json'), JSON.stringify(data, '', 4), 'utf-8');
+        }
     } catch (error) {
         throw new Error(error.message)
     }
