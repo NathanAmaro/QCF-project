@@ -51,15 +51,22 @@ app.on('window-all-closed', () => {
 // Sincronizando a database
 const syncDB = async () => {
     const database = db;
+    // Versão da última alteração na base de dados
     const SyncDBVersion = 2
+    // Lendo o arquivo de configuração
     var rawconfig = fs.readFileSync(path.join(__dirname, '../config.json'));
     var configJSON = JSON.parse(rawconfig);
 
     try {
         if (configJSON.syncDB === SyncDBVersion) {
+            // Se o arquivo de configuração já registrar que foi feita a última alteração
+            // A sinconização será padrão. Verificará somente se a tabela existe, se não existir irá criar
             await database.sync();
         } else {
+            // Se o arquivo de configuração não estiver registrado que a última alteração foi feita
+            // A sinconização será invasiva. Verificará quaisquer alterações na tabela e as aplicará
             await database.sync({ alter: true });
+            // Adicionando a última versão da base de dados no arquivo de configuração
             const data = { ...configJSON, ...{syncDB: SyncDBVersion} }
             fs.writeFileSync(path.join(__dirname, '../config.json'), JSON.stringify(data, '', 4), 'utf-8');
         }
@@ -219,6 +226,7 @@ ipcMain.handle('update-movement', async (event, idMov, formData) => {
             origin: formData.origin,
             value: formData.value,
             description: formData.description,
+            favoriteDescription: formData.favoriteDescription
         }, {
             where: {
                 id: idMov

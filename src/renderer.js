@@ -191,6 +191,8 @@ document.getElementById("value-movement").addEventListener("keydown", function (
 document.getElementById("bt-close-modal-alter").addEventListener("click", () => showModalAlter(false))
 // Adicionando evento de Click no botão de cancelar modal de alterar movimento
 document.getElementById("bt-cancel-modal-alter").addEventListener("click", () => showModalAlter(false))
+// Adicionando evento de Click no botão de localizar descrição favoritada
+document.getElementById("bt-get-description-alter").addEventListener("click", () => showModalGetDescription(true, 'description-movement-alter'))
 // Adicionando evento de submit no formulário
 document.getElementById("form-modal-alter").addEventListener("submit", (e) => formHandleAlter(e))
 // Adicionando evento Click no checkbox do Saldo Inicial
@@ -403,6 +405,7 @@ async function formHandleAlter(event) {
         value: form.elements['value-movement-alter'].value,
         typeValue: form.elements['type-value-movement-alter'].checked,
         description: form.elements['description-movement-alter'].value,
+        favoriteDescription: form.elements['favorite-description-alter'].checked
     }
 
     await formValidate(formData)
@@ -678,6 +681,7 @@ async function alterMov(event) {
                     form.elements['value-movement-alter'].value = handleRoudValue(values.value)
                     form.elements['type-value-movement-alter'].checked = values.type === 'Despesa' ? true : false
                     form.elements['description-movement-alter'].value = values.description
+                    form.elements['favorite-description-alter'].checked = values.favoriteDescription
 
                     showLoading(false)
                     showModalAlter(true)
@@ -889,7 +893,7 @@ function handleGetFavoriteDescription() {
     const elementText = document.getElementById(idElemFavoriteDescription)
     if (lineSelected.length === 1) {
         const description = lineSelected[0].childNodes[0].innerHTML
-        elementText.innerHTML = description
+        elementText.value = description
         showModalGetDescription(false)
     } else {
         Swal.fire({ title: "Erro", text: 'Selecione alguma informação para continuar.', icon: 'error', allowOutsideClick: false })
@@ -974,9 +978,9 @@ async function showModalReference(param) {
  */
  async function showModalGetDescription(show, elemID) {
     // Buscando o modal de buscar descrição
-    const modal = document.getElementById("overlay-modal-getdescription");
-    const element = document.getElementById(elemID);
-    const inputSearch = document.getElementById('search-description');
+    const modal = document.getElementById("overlay-modal-getdescription")
+    const element = document.getElementById(elemID)
+    const inputSearch = document.getElementById('search-description')
 
     if (show && element) {
         genFavoriteDescriptions()

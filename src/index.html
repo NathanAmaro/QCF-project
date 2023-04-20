@@ -267,9 +267,21 @@
                 </div>
                 <div class="main-modal-row">
                     <div class="container-textarea-modal">
-                        <h6 class="title-input-modal">Descrição</h6>
-                        <textarea class="textarea-modal" placeholder="Descrição"
-                            id="description-movement-alter"></textarea>
+                        <div class="container-title-description">
+                            <h6 class="title-input-modal">Descrição</h6>
+                            <div class="container-fav-description">
+                                <input type="checkbox" id="favorite-description-alter" />
+                                <label for="favorite-description-alter">Favoritar descrição</label>
+                            </div>
+                        </div>
+                        <div class="container-description-area">
+                            <textarea class="textarea-modal" placeholder="Descrição" id="description-movement-alter"></textarea>
+                            <button class="bt-get-description" id="bt-get-description-alter" title="Localizar descrição"
+                                type="button">
+                                <img src="../build/magnifying-glass-bold-blue-200.svg" width="15" height="15"
+                                    alt="Icon button get description" />
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="footer-modal">
